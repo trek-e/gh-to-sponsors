@@ -4,13 +4,20 @@
   "description": "A syndication tool for open source creators to post GitHub activity updates to supporter platforms",
   "type": "module",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
+    "start": "node dist/server/index.js",
+    "dev": "tsx watch src/server/index.ts",
+    "docker:build": "docker build -t gh-to-sponsors .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env gh-to-sponsors",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:dev": "docker compose --profile dev up approval-server-dev",
     "generate-digest": "node --import tsx src/actions/generate-digest.ts",
     "process-approval": "node --import tsx src/actions/process-approval.ts"
   },
@@ -27,11 +34,13 @@
     "@aws-sdk/client-ses": "^3.980.0",
     "@octokit/rest": "^22.0.1",
     "@sendgrid/mail": "^8.1.6",
+    "express": "^5.2.1",
     "resend": "^4.0.1",
     "yaml": "^2.6.1",
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^22.10.5",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",

@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Git
+.git/
+.gitignore
+
+# Planning docs
+.planning/
+
+# IDE
+.vscode/
+.idea/
+
+# Test files
+tests/
+*.test.ts
+coverage/
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# State (managed by GitHub artifacts)
+.state/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Vercel (deprecated)
+api/
+vercel.json
+
+# GitHub workflows (run separately)
+.github/
+
+# Documentation
+README.md
+LICENSE

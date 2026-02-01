@@ -38,26 +38,24 @@ The approval loop infrastructure is built:
 - Scheduled GitHub Action for digest generation
 - Secure token-based approval links (HMAC-SHA256)
 - Email provider abstraction (Resend, SES, SendGrid)
-- Vercel serverless endpoint for handling approvals
+- **Containerized approval server** (Docker)
 - State persistence via GitHub artifacts
-
-See [Deployment Guide](.planning/phases/01-foundation-approval-loop/01-07-SUMMARY.md) to deploy and verify.
 
 ## Quick Start
 
 ### Prerequisites
 
-- Node.js 24+
-- Vercel account (free tier works)
+- Docker & Docker Compose
 - Email provider account (Resend recommended, free tier: 3,000/month)
 - GitHub repository
+- Container hosting (Fly.io, Railway, Cloud Run, or any Docker host)
 
-### 1. Clone and Install
+### 1. Clone and Configure
 
 ```bash
 git clone https://github.com/trek-e/gh-to-sponsors.git
 cd gh-to-sponsors
-npm install
+cp .env.example .env
 ```
 
 ### 2. Generate Approval Secret
@@ -66,20 +64,57 @@ npm install
 openssl rand -base64 32
 ```
 
-Save this value — you'll need it for both Vercel and GitHub.
+Add to your `.env` file along with other required values.
 
-### 3. Deploy to Vercel
+### 3. Build and Run Locally
 
 ```bash
-vercel link
-vercel env add APPROVAL_SECRET    # paste your secret
-vercel env add GITHUB_TOKEN       # PAT with repo scope
-vercel env add GITHUB_OWNER       # your username/org
-vercel env add GITHUB_REPO        # repository name
-vercel --prod
+# Build the container
+npm run docker:build
+
+# Run with environment variables
+npm run docker:run
+
+# Or use docker compose
+npm run docker:up
 ```
 
-### 4. Configure GitHub Secrets
+Test the health endpoint:
+```bash
+curl http://localhost:3000/health
+```
+
+### 4. Deploy Container
+
+Deploy to your preferred container platform:
+
+**Fly.io:**
+```bash
+fly launch
+fly secrets set APPROVAL_SECRET=your-secret
+fly secrets set GITHUB_TOKEN=your-token
+fly secrets set GITHUB_OWNER=your-username
+fly secrets set GITHUB_REPO=gh-to-sponsors
+fly deploy
+```
+
+**Railway:**
+```bash
+railway init
+railway up
+# Set environment variables in Railway dashboard
+```
+
+**Google Cloud Run:**
+```bash
+gcloud run deploy gh-to-sponsors \
+  --source . \
+  --set-env-vars "APPROVAL_SECRET=...,GITHUB_TOKEN=...,GITHUB_OWNER=...,GITHUB_REPO=..."
+```
+
+Note your deployment URL (e.g., `https://gh-to-sponsors.fly.dev`)
+
+### 5. Configure GitHub Secrets
 
 Go to: Repository → Settings → Secrets → Actions
 
@@ -90,9 +125,9 @@ Add these secrets:
 | `EMAIL_API_KEY` | Your email provider API key |
 | `EMAIL_FROM` | Your verified sender email |
 | `APPROVAL_SECRET` | Same secret from step 2 |
-| `APPROVAL_ENDPOINT_URL` | Your Vercel URL (e.g., `https://gh-to-sponsors.vercel.app`) |
+| `APPROVAL_ENDPOINT_URL` | Your container deployment URL |
 
-### 5. Create Configuration File
+### 6. Create Configuration File
 
 ```yaml
 # gh-to-sponsors.config.yaml
@@ -121,12 +156,77 @@ git commit -m "chore: add configuration"
 git push
 ```
 
-### 6. Test
+### 7. Test
 
 1. Go to Actions tab → "Daily Digest Check" → Run workflow
 2. Check your email for approval link
 3. Click approve
 4. Verify "Handle Approval" workflow runs
+
+## Container Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `PORT` | No | Server port (default: 3000) |
+| `APPROVAL_SECRET` | Yes | Shared secret for token signing |
+| `GITHUB_TOKEN` | Yes | PAT with repo scope |
+| `GITHUB_OWNER` | Yes | GitHub username or org |
+| `GITHUB_REPO` | Yes | Repository name |
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Type check
+npm run typecheck
+
+# Run server locally (hot reload)
+npm run dev
+
+# Or with Docker
+npm run docker:dev
+```
+
+### Docker Commands
+
+```bash
+npm run docker:build   # Build image
+npm run docker:run     # Run container
+npm run docker:up      # Start with docker-compose
+npm run docker:down    # Stop containers
+npm run docker:dev     # Development mode with hot reload
+```
+
+## Architecture
+
+```
+GitHub Actions (schedule-digest.yml)
+    ↓
+Generate digest → Send approval email
+    ↓
+Creator clicks approve link
+    ↓
+Container Server (GET /api/approve/:token)
+    ↓
+Verify token → Trigger repository_dispatch
+    ↓
+GitHub Actions (handle-approval.yml)
+    ↓
+Update state → Post to platforms (Phase 3+)
+```
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Health check |
+| `/api/approve/:token` | GET | Handle approval/skip clicks |
+| `/api/status/:postId` | GET | View post status |
 
 ## Configuration
 
@@ -162,40 +262,6 @@ email:
 approval:
   expirationHours: 24    # Link expires after 24 hours
   autoAction: none       # none | auto-approve | auto-skip
-```
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run tests
-npm test
-
-# Type check
-npm run typecheck
-
-# Run locally (requires environment variables)
-npm run generate-digest
-```
-
-## Architecture
-
-```
-GitHub Actions (schedule-digest.yml)
-    ↓
-Generate digest → Send approval email
-    ↓
-Creator clicks approve link
-    ↓
-Vercel Function (/api/approve/[token])
-    ↓
-Verify token → Trigger repository_dispatch
-    ↓
-GitHub Actions (handle-approval.yml)
-    ↓
-Update state → Post to platforms (Phase 3+)
 ```
 
 ## Roadmap
