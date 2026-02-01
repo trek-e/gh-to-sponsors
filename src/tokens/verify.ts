@@ -15,11 +15,11 @@ import type { TokenPayload, VerificationResult } from '../types/token.js';
  * @param usedTokens - Optional array of already-used jti values
  * @returns Verification result with postId/action/jti if valid, or reason if invalid
  */
-export async function verifyToken(
+export function verifyToken(
   token: string,
   secret: string,
   usedTokens?: string[]
-): Promise<VerificationResult> {
+): VerificationResult {
   try {
     // Parse token format: encoded.signature
     const parts = token.split('.');

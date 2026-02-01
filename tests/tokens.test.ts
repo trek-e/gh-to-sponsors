@@ -29,7 +29,7 @@ describe('Token Generation', () => {
     expect(payload.jti.length).toBeGreaterThan(0);
   });
 
-  test('signToken + verifyToken roundtrip succeeds', async () => {
+  test('signToken + verifyToken roundtrip succeeds', () => {
     const payload: TokenPayload = {
       postId: 'post-456',
       action: 'skip',
@@ -38,7 +38,7 @@ describe('Token Generation', () => {
     };
 
     const token = signToken(payload, TEST_SECRET);
-    const result = await verifyToken(token, TEST_SECRET);
+    const result = verifyToken(token, TEST_SECRET);
 
     expect(result.valid).toBe(true);
     if (result.valid) {
@@ -50,7 +50,7 @@ describe('Token Generation', () => {
 });
 
 describe('Token Verification', () => {
-  test('expired token returns { valid: false, reason: "expired" }', async () => {
+  test('expired token returns { valid: false, reason: "expired" }', () => {
     const payload: TokenPayload = {
       postId: 'post-789',
       action: 'approve',
@@ -59,7 +59,7 @@ describe('Token Verification', () => {
     };
 
     const token = signToken(payload, TEST_SECRET);
-    const result = await verifyToken(token, TEST_SECRET);
+    const result = verifyToken(token, TEST_SECRET);
 
     expect(result.valid).toBe(false);
     if (!result.valid) {
@@ -67,7 +67,7 @@ describe('Token Verification', () => {
     }
   });
 
-  test('token with wrong secret returns { valid: false, reason: "invalid-signature" }', async () => {
+  test('token with wrong secret returns { valid: false, reason: "invalid-signature" }', () => {
     const payload: TokenPayload = {
       postId: 'post-999',
       action: 'approve',
@@ -76,7 +76,7 @@ describe('Token Verification', () => {
     };
 
     const token = signToken(payload, TEST_SECRET);
-    const result = await verifyToken(token, 'wrong-secret');
+    const result = verifyToken(token, 'wrong-secret');
 
     expect(result.valid).toBe(false);
     if (!result.valid) {
@@ -84,7 +84,7 @@ describe('Token Verification', () => {
     }
   });
 
-  test('token with modified payload returns { valid: false, reason: "invalid-signature" }', async () => {
+  test('token with modified payload returns { valid: false, reason: "invalid-signature" }', () => {
     const payload: TokenPayload = {
       postId: 'post-111',
       action: 'approve',
@@ -100,7 +100,7 @@ describe('Token Verification', () => {
     const tamperedEncoded = Buffer.from(JSON.stringify(tamperedPayload)).toString('base64url');
     const tamperedToken = `${tamperedEncoded}.${signature}`;
 
-    const result = await verifyToken(tamperedToken, TEST_SECRET);
+    const result = verifyToken(tamperedToken, TEST_SECRET);
 
     expect(result.valid).toBe(false);
     if (!result.valid) {
@@ -108,7 +108,7 @@ describe('Token Verification', () => {
     }
   });
 
-  test('token with jti in usedTokens returns { valid: false, reason: "already-used" }', async () => {
+  test('token with jti in usedTokens returns { valid: false, reason: "already-used" }', () => {
     const payload: TokenPayload = {
       postId: 'post-222',
       action: 'skip',
@@ -119,7 +119,7 @@ describe('Token Verification', () => {
     const token = signToken(payload, TEST_SECRET);
     const usedTokens = ['used-jti-123', 'another-used-jti'];
 
-    const result = await verifyToken(token, TEST_SECRET, usedTokens);
+    const result = verifyToken(token, TEST_SECRET, usedTokens);
 
     expect(result.valid).toBe(false);
     if (!result.valid) {
@@ -127,8 +127,8 @@ describe('Token Verification', () => {
     }
   });
 
-  test('garbage input returns { valid: false, reason: "malformed" }', async () => {
-    const result = await verifyToken('not-a-valid-token', TEST_SECRET);
+  test('garbage input returns { valid: false, reason: "malformed" }', () => {
+    const result = verifyToken('not-a-valid-token', TEST_SECRET);
 
     expect(result.valid).toBe(false);
     if (!result.valid) {
@@ -136,8 +136,8 @@ describe('Token Verification', () => {
     }
   });
 
-  test('empty string returns { valid: false, reason: "malformed" }', async () => {
-    const result = await verifyToken('', TEST_SECRET);
+  test('empty string returns { valid: false, reason: "malformed" }', () => {
+    const result = verifyToken('', TEST_SECRET);
 
     expect(result.valid).toBe(false);
     if (!result.valid) {
@@ -145,7 +145,7 @@ describe('Token Verification', () => {
     }
   });
 
-  test('token without signature returns { valid: false, reason: "malformed" }', async () => {
+  test('token without signature returns { valid: false, reason: "malformed" }', () => {
     const payload: TokenPayload = {
       postId: 'post-333',
       action: 'approve',
@@ -156,7 +156,7 @@ describe('Token Verification', () => {
     const encoded = Buffer.from(JSON.stringify(payload)).toString('base64url');
     const tokenWithoutSignature = encoded; // No dot, no signature
 
-    const result = await verifyToken(tokenWithoutSignature, TEST_SECRET);
+    const result = verifyToken(tokenWithoutSignature, TEST_SECRET);
 
     expect(result.valid).toBe(false);
     if (!result.valid) {
