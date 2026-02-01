@@ -31,12 +31,16 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Creator clicks approve link and platforms receive posting trigger
   4. Approval links expire after 24-48 hours and cannot be replayed
   5. System tracks which drafts are pending vs posted
-**Plans**: TBD
+**Plans**: 7 plans in 5 waves
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md — Project setup, types, and configuration schema
+- [ ] 01-02-PLAN.md — Token signing and verification (TDD)
+- [ ] 01-03-PLAN.md — State management with artifacts
+- [ ] 01-04-PLAN.md — Email provider abstraction and templates
+- [ ] 01-05-PLAN.md — Vercel approval endpoint
+- [ ] 01-06-PLAN.md — GitHub Actions workflows
+- [ ] 01-07-PLAN.md — End-to-end verification (checkpoint)
 
 ### Phase 2: Content Generation
 **Goal**: System creates digestible updates from GitHub activity automatically
@@ -123,7 +127,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Approval Loop | 0/TBD | Not started | - |
+| 1. Foundation & Approval Loop | 0/7 | Planned | - |
 | 2. Content Generation | 0/TBD | Not started | - |
 | 3. First Platform Integration | 0/TBD | Not started | - |
 | 4. Multi-Platform Expansion | 0/TBD | Not started | - |
