@@ -1,0 +1,53 @@
+# GitHub Actions Workflow: Handle Approval
+#
+# This workflow is triggered by repository_dispatch events from the Vercel
+# approval endpoint. It processes approval/skip actions and updates state.
+#
+# Triggered when: User clicks approve/skip link in email
+# Event type: approval-received
+# Payload: { postId, action, jti, timestamp }
+
+name: Handle Approval
+
+on:
+  repository_dispatch:
+    types: [approval-received]
+
+jobs:
+  process-approval:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download current state
+        uses: actions/download-artifact@v6
+        with:
+          name: digest-state
+          path: .state
+        continue-on-error: true  # First run has no artifact
+
+      - name: Process approval
+        env:
+          POST_ID: ${{ github.event.client_payload.postId }}
+          ACTION: ${{ github.event.client_payload.action }}
+          JTI: ${{ github.event.client_payload.jti }}
+          TIMESTAMP: ${{ github.event.client_payload.timestamp }}
+        run: npm run process-approval
+
+      - name: Upload updated state
+        uses: actions/upload-artifact@v6
+        with:
+          name: digest-state
+          path: .state/digest.json
+          retention-days: 90
