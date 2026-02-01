@@ -38,17 +38,17 @@ The approval loop infrastructure is built:
 - Scheduled GitHub Action for digest generation
 - Secure token-based approval links (HMAC-SHA256)
 - Email provider abstraction (Resend, SES, SendGrid)
-- **Containerized approval server** (Docker)
+- **Containerized serverless approval endpoint** (Docker)
 - State persistence via GitHub artifacts
 
 ## Quick Start
 
 ### Prerequisites
 
-- Docker & Docker Compose
+- Docker & Docker Compose (for local development)
 - Email provider account (Resend recommended, free tier: 3,000/month)
 - GitHub repository
-- Container hosting (Fly.io, Railway, Cloud Run, or any Docker host)
+- Container serverless platform (Cloud Run, Fly.io, Railway, AWS App Runner, Azure Container Apps)
 
 ### 1. Clone and Configure
 
@@ -84,9 +84,17 @@ Test the health endpoint:
 curl http://localhost:3000/health
 ```
 
-### 4. Deploy Container
+### 4. Deploy to Container Serverless
 
-Deploy to your preferred container platform:
+Deploy to a serverless container platform. The container scales to zero when not in use — you only pay for actual approval clicks.
+
+**Google Cloud Run** (recommended):
+```bash
+gcloud run deploy gh-to-sponsors \
+  --source . \
+  --allow-unauthenticated \
+  --set-env-vars "APPROVAL_SECRET=...,GITHUB_TOKEN=...,GITHUB_OWNER=...,GITHUB_REPO=..."
+```
 
 **Fly.io:**
 ```bash
@@ -105,14 +113,12 @@ railway up
 # Set environment variables in Railway dashboard
 ```
 
-**Google Cloud Run:**
+**AWS App Runner:**
 ```bash
-gcloud run deploy gh-to-sponsors \
-  --source . \
-  --set-env-vars "APPROVAL_SECRET=...,GITHUB_TOKEN=...,GITHUB_OWNER=...,GITHUB_REPO=..."
+# Deploy via AWS Console or CLI with environment variables
 ```
 
-Note your deployment URL (e.g., `https://gh-to-sponsors.fly.dev`)
+Note your deployment URL (e.g., `https://gh-to-sponsors-xyz.a.run.app`)
 
 ### 5. Configure GitHub Secrets
 
@@ -163,11 +169,13 @@ git push
 3. Click approve
 4. Verify "Handle Approval" workflow runs
 
-## Container Environment Variables
+## Environment Variables
+
+Set these in your serverless container platform:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `PORT` | No | Server port (default: 3000) |
+| `PORT` | No | Server port (default: 3000, usually set by platform) |
 | `APPROVAL_SECRET` | Yes | Shared secret for token signing |
 | `GITHUB_TOKEN` | Yes | PAT with repo scope |
 | `GITHUB_OWNER` | Yes | GitHub username or org |
@@ -204,6 +212,8 @@ npm run docker:dev     # Development mode with hot reload
 
 ## Architecture
 
+The approval endpoint runs as a serverless container — it scales to zero when idle and spins up on-demand when approval links are clicked. No always-on costs.
+
 ```
 GitHub Actions (schedule-digest.yml)
     ↓
@@ -211,7 +221,7 @@ Generate digest → Send approval email
     ↓
 Creator clicks approve link
     ↓
-Container Server (GET /api/approve/:token)
+Serverless Container (GET /api/approve/:token)
     ↓
 Verify token → Trigger repository_dispatch
     ↓
