@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A syndication tool for open source creators who use crowdfunding. It monitors GitHub activity, drafts digest updates and release announcements, and posts them to supporter platforms (Patreon, Ko-fi, Ghost) and social media (Bluesky, Mastodon) after email-based approval. Built for the community of crowdfunded developers who want to keep supporters informed without manual cross-posting.
+A syndication tool for open source creators who use crowdfunding. It monitors GitHub activity, drafts digest updates and release announcements, and posts them to supporter platforms (Patreon, Ghost) and social media (Bluesky, Mastodon) after email-based approval. Built for the community of crowdfunded developers who want to keep supporters informed without manual cross-posting.
 
 ## Core Value
 
@@ -22,7 +22,6 @@ Creators approve one email and their supporters on every platform get updated �
 - [ ] Detect GitHub Releases and draft announcements
 - [ ] Email drafts with approve/skip links
 - [ ] Post to Patreon on approval
-- [ ] Post to Ko-fi on approval
 - [ ] Post to Ghost on approval
 - [ ] Post teasers to Bluesky on approval
 - [ ] Post teasers to Mastodon on approval
@@ -31,6 +30,7 @@ Creators approve one email and their supporters on every platform get updated �
 
 ### Out of Scope
 
+- Ko-fi integration — no posting API exists (webhook-only for payment notifications)
 - X/Twitter integration — explicitly excluded, platform enables fascism
 - Meta platforms (Facebook, Instagram, Threads) — same reasoning
 - Edit-before-send workflow — approve/skip is sufficient for v1
@@ -45,10 +45,9 @@ Creators approve one email and their supporters on every platform get updated �
 1. Make commits, ship releases
 2. Write update post
 3. Log into Patreon, paste, post
-4. Log into Ko-fi, paste, post
-5. Log into Ghost, paste, post
-6. Open Bluesky, write teaser, post
-7. Open Mastodon, write teaser, post
+4. Log into Ghost, paste, post
+5. Open Bluesky, write teaser, post
+6. Open Mastodon, write teaser, post
 
 **Target workflow (gh-to-sponsors):**
 1. Make commits, ship releases
@@ -77,6 +76,7 @@ Creators approve one email and their supporters on every platform get updated �
 | Serverless approval endpoint | Minimal infra, scales to zero, easy for others to deploy | — Pending |
 | Plugin system for platforms | Community can add their own platforms, future-proofs the tool | — Pending |
 | No X/Meta platforms | Values alignment, explicit stance against fascist-enabling platforms | — Pending |
+| Exclude Ko-fi from v1 | No posting API exists, only webhook for payment notifications | — Pending |
 
 ---
-*Last updated: 2025-02-01 after initialization*
+*Last updated: 2025-02-01 after research*
