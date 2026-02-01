@@ -10,7 +10,9 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "generate-digest": "node --import tsx src/actions/generate-digest.ts",
+    "process-approval": "node --import tsx src/actions/process-approval.ts"
   },
   "keywords": [
     "github",
@@ -31,6 +33,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "vitest": "^2.1.8"
   }

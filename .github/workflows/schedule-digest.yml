@@ -1,0 +1,69 @@
+# GitHub Actions Workflow: Scheduled Digest Generation
+#
+# This workflow runs daily to generate content digests and send approval emails.
+# It can also be triggered manually via workflow_dispatch.
+#
+# IMPORTANT: Scheduled workflows on public repos auto-disable after 60 days
+# of repository inactivity. If this happens, manually re-enable in Actions tab.
+#
+# Schedule is offset from top of hour to avoid GitHub Actions load delays.
+# Users should customize the cron schedule to their preferred time.
+
+name: Generate Digest
+
+on:
+  schedule:
+    # Run daily at 9:37 AM UTC (offset from hour for reliability)
+    # CUSTOMIZE THIS: Change to your preferred time
+    # Format: 'minute hour day month weekday'
+    # Example: '0 14 * * *' for 2:00 PM UTC daily
+    - cron: '37 9 * * *'
+
+  workflow_dispatch:
+    # Manual trigger with optional force parameter
+    inputs:
+      force:
+        description: 'Force digest generation even if no new content'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  generate-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download previous state
+        uses: actions/download-artifact@v6
+        with:
+          name: digest-state
+          path: .state
+        continue-on-error: true  # First run has no artifact
+
+      - name: Generate digest and send email
+        env:
+          EMAIL_API_KEY: ${{ secrets.EMAIL_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          APPROVAL_SECRET: ${{ secrets.APPROVAL_SECRET }}
+          APPROVAL_ENDPOINT_URL: ${{ secrets.APPROVAL_ENDPOINT_URL }}
+          FORCE_DIGEST: ${{ github.event.inputs.force || 'false' }}
+        run: npm run generate-digest
+
+      - name: Upload updated state
+        uses: actions/upload-artifact@v6
+        with:
+          name: digest-state
+          path: .state/digest.json
+          retention-days: 90
