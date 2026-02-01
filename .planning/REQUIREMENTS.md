@@ -93,34 +93,34 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| GHUB-01 | TBD | Pending |
-| GHUB-02 | TBD | Pending |
-| GHUB-03 | TBD | Pending |
-| CONT-01 | TBD | Pending |
-| CONT-02 | TBD | Pending |
-| CONT-03 | TBD | Pending |
-| SCHD-01 | TBD | Pending |
-| SCHD-02 | TBD | Pending |
-| SCHD-03 | TBD | Pending |
-| APPR-01 | TBD | Pending |
-| APPR-02 | TBD | Pending |
-| APPR-03 | TBD | Pending |
-| APPR-04 | TBD | Pending |
-| SUPP-01 | TBD | Pending |
-| SUPP-02 | TBD | Pending |
-| SOCL-01 | TBD | Pending |
-| SOCL-02 | TBD | Pending |
-| EXTN-01 | TBD | Pending |
-| EXTN-02 | TBD | Pending |
-| INFR-01 | TBD | Pending |
-| INFR-02 | TBD | Pending |
-| INFR-03 | TBD | Pending |
+| INFR-01 | Phase 1 | Pending |
+| INFR-02 | Phase 1 | Pending |
+| INFR-03 | Phase 1 | Pending |
+| APPR-01 | Phase 1 | Pending |
+| APPR-02 | Phase 1 | Pending |
+| APPR-03 | Phase 1 | Pending |
+| APPR-04 | Phase 1 | Pending |
+| SCHD-01 | Phase 1 | Pending |
+| GHUB-01 | Phase 2 | Pending |
+| GHUB-02 | Phase 2 | Pending |
+| CONT-01 | Phase 2 | Pending |
+| CONT-02 | Phase 2 | Pending |
+| CONT-03 | Phase 2 | Pending |
+| SUPP-01 | Phase 3 | Pending |
+| EXTN-01 | Phase 3 | Pending |
+| SUPP-02 | Phase 4 | Pending |
+| SOCL-01 | Phase 4 | Pending |
+| SOCL-02 | Phase 4 | Pending |
+| GHUB-03 | Phase 5 | Pending |
+| SCHD-02 | Phase 5 | Pending |
+| SCHD-03 | Phase 5 | Pending |
+| EXTN-02 | Phase 6 | Pending |
 
 **Coverage:**
 - v1 requirements: 22 total
-- Mapped to phases: 0
-- Unmapped: 22 (pending roadmap creation)
+- Mapped to phases: 22 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2025-02-01*
-*Last updated: 2025-02-01 after scoping*
+*Last updated: 2026-02-01 after roadmap creation*
