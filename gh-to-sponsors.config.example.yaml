@@ -1,0 +1,36 @@
+# gh-to-sponsors configuration example
+#
+# Copy this file to gh-to-sponsors.config.yaml and customize for your setup.
+# See documentation: https://github.com/yourorg/gh-to-sponsors
+
+# Email provider configuration
+# Supports: resend (default), ses, sendgrid
+email:
+  provider: resend  # Email service to use
+  apiKey: re_YOUR_API_KEY_HERE  # API key for your email provider
+  fromEmail: updates@yourdomain.com  # Email address digests are sent from
+  replyTo: you@yourdomain.com  # Optional: Reply-to address
+
+# Approval link behavior
+approval:
+  expirationHours: 24  # How long approval links remain valid (24 or 48)
+  autoAction: none  # Action after expiration: approve | skip | none
+  # - approve: Auto-approve expired digests (set-and-forget for busy creators)
+  # - skip: Auto-skip expired digests (avoid stale content)
+  # - none: Require manual action (no auto-approval or auto-skip)
+
+# Schedule configuration
+schedule:
+  # Cron expression for daily digest generation
+  # Format: minute hour day month weekday
+  # Example: "37 9 * * *" runs at 9:37 AM UTC daily
+  # TIP: Use offset from top of hour (e.g., 37 instead of 00) for better GitHub Actions reliability
+  cronExpression: "37 9 * * *"
+
+  # Optional: Timezone for display purposes (cron always runs in UTC)
+  timezone: "America/New_York"
+
+# GitHub repository to monitor
+github:
+  owner: yourorg  # GitHub username or organization
+  repo: yourrepo  # Repository name
