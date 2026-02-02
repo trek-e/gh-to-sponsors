@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 4 of 6 (Multi-Platform Expansion)
-Plan: 2 of 3 complete (04-02)
-Status: In progress
-Last activity: 2026-02-02 - Completed 04-02-PLAN.md (Bluesky plugin)
+Plan: 4 of 4 complete (04-04)
+Status: Phase complete
+Last activity: 2026-02-02 - Completed 04-04-PLAN.md (Platform registration)
 
-Progress: [█████████████████░░░] ~85% (Phase 1-3 complete, Phase 4 Wave 2 complete)
+Progress: [██████████████████░░] ~90% (Phase 1-4 complete, Phase 5-6 remaining)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
-- Average duration: 2.5 minutes
-- Total execution time: 0.85 hours
+- Total plans completed: 22
+- Average duration: 2.4 minutes
+- Total execution time: 0.92 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [█████████████████░░░] ~85% (P
 | 1 - Foundation & Approval Loop | 7/7 | 18 min | 2.6 min |
 | 2 - Content Generation | 5/5 | 12 min | 2.4 min |
 | 3 - First Platform Integration | 5/5 | 15 min | 3.0 min |
-| 4 - Multi-Platform Expansion | 2/3 | 12 min | 6.0 min |
+| 4 - Multi-Platform Expansion | 4/4 | 16 min | 4.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-05 (4 min), 04-01 (2 min), 04-02 (7 min)
-- Trend: TDD plans take longer (test writing overhead) but deliver high quality
+- Last 5 plans: 04-01 (2 min), 04-02 (7 min), 04-03 (3 min), 04-04 (3 min)
+- Trend: Integration plans fast (3 min), TDD plans slower (7 min) but thorough
 
 *Updated after each plan completion*
 
@@ -179,6 +179,13 @@ Recent decisions affecting current work:
 - Language tag 'en' included for discoverability
 - MAX_RETRIES=3 with exponential backoff consistent with GhostPlugin
 
+**From 04-04:**
+- Bluesky credentials from env vars: BLUESKY_IDENTIFIER, BLUESKY_APP_PASSWORD
+- Mastodon credentials from env vars: MASTODON_INSTANCE_URL, MASTODON_ACCESS_TOKEN
+- Factory registration pattern for all platforms
+- Optional BLUESKY_DEFAULT_LANG (defaults to 'en')
+- Optional MASTODON_VISIBILITY (defaults to 'public')
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -233,15 +240,17 @@ Recent decisions affecting current work:
 - Failure notification emails with per-platform retry links
 - Ready for multi-platform expansion (Phase 4)
 
-**Phase 4 Wave 2 Complete (Parallel Plugin Implementation):**
+**Phase 4 Complete (Multi-Platform Expansion):**
 - 04-01: Configuration types and Zod schemas complete
 - 04-02: BlueskyPlugin complete (TDD, 19 tests passing, app password auth, RichText facets)
 - 04-03: MastodonPlugin complete (TDD, 20 tests passing, REST API client)
-- Next: 04-04 platform registration to integrate both plugins
+- 04-04: Platform registration complete (Bluesky and Mastodon wired into setup)
+- Multi-platform posting ready: Ghost + Bluesky + Mastodon
+- 148 tests passing (no regressions)
 
 ## Session Continuity
 
-Last session: 2026-02-02 22:46 UTC
-Stopped at: Completed 04-02-PLAN.md (Bluesky plugin implementation)
+Last session: 2026-02-02 22:53 UTC
+Stopped at: Completed 04-04-PLAN.md (Platform registration - Phase 4 complete)
 Resume file: None
-Next action: Proceed to 04-04 (platform registration) to integrate both Bluesky and Mastodon
+Next action: Phase 4 complete. Ready for Phase 5 or Phase 6.
