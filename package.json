@@ -31,9 +31,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.72.1",
     "@aws-sdk/client-ses": "^3.980.0",
     "@octokit/rest": "^22.0.1",
     "@sendgrid/mail": "^8.1.6",
+    "date-fns": "^4.1.0",
     "express": "^5.2.1",
     "resend": "^4.0.1",
     "yaml": "^2.6.1",

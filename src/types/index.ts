@@ -37,3 +37,16 @@ export type {
   TokenPayload,
   VerificationResult,
 } from './token.js';
+
+// Content generation types
+export type {
+  CommitType,
+  Commit,
+  ClassifiedCommit,
+  CommitContext,
+  RepoCommitGroup,
+  ActivityPeriod,
+  Digest,
+  Teaser,
+  GenerationResult,
+} from './content.js';
