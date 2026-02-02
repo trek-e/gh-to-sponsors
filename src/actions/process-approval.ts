@@ -8,7 +8,95 @@
 
 import { loadState, saveState, updatePostStatus, markTokenUsed, updatePlatformResults } from '../state/index.js';
 import { getReadyPlatforms } from '../platforms/setup.js';
-import { postToAllPlatforms, resultsToStateFormat } from '../platforms/executor.js';
+import { postToAllPlatforms, resultsToStateFormat, type PlatformPostResult } from '../platforms/executor.js';
+import { generateRetryToken } from '../tokens/index.js';
+import { createEmailProvider, renderFailureNotificationEmail, type FailureNotificationData } from '../email/index.js';
+import { loadConfig } from '../config/load.js';
+
+/**
+ * Sends failure notification email with retry links for failed platforms
+ */
+async function sendFailureNotification(
+  postId: string,
+  postTitle: string,
+  results: PlatformPostResult[]
+): Promise<void> {
+  try {
+    console.log('Sending failure notification email...');
+
+    // Get required environment variables
+    const hmacSecret = process.env.HMAC_SECRET;
+    const approvalUrl = process.env.APPROVAL_URL;
+
+    if (!hmacSecret) {
+      console.warn('HMAC_SECRET not set - cannot generate retry tokens');
+      return;
+    }
+
+    if (!approvalUrl) {
+      console.warn('APPROVAL_URL not set - cannot generate retry links');
+      return;
+    }
+
+    // Load config for email provider
+    const config = await loadConfig();
+    const emailProvider = createEmailProvider(config.email);
+
+    // Get notification email (fall back to fromEmail if not set)
+    const notificationEmail = process.env.NOTIFICATION_EMAIL || config.email.fromEmail;
+
+    // Default expiration hours (match approval token expiration)
+    const expirationHours = config.approval.expirationHours;
+
+    // Build failure notification data
+    const successfulPlatforms = results
+      .filter(r => r.success)
+      .map(r => ({
+        name: r.platform,
+        postUrl: r.postUrl
+      }));
+
+    const failedPlatforms = results
+      .filter(r => !r.success)
+      .map(r => {
+        // Generate retry token for this specific platform
+        const retryToken = generateRetryToken(postId, [r.platform], expirationHours, hmacSecret);
+        const retryLink = `${approvalUrl}/api/approve/${retryToken}`;
+
+        return {
+          name: r.platform,
+          error: r.error || 'Unknown error',
+          retryLink
+        };
+      });
+
+    const notificationData: FailureNotificationData = {
+      postTitle,
+      successfulPlatforms,
+      failedPlatforms,
+      expirationHours
+    };
+
+    // Render and send email
+    const email = renderFailureNotificationEmail(notificationData);
+
+    const result = await emailProvider.send({
+      to: notificationEmail,
+      subject: email.subject,
+      html: email.html,
+      text: email.text
+    });
+
+    if (result.success) {
+      console.log(`Failure notification sent to ${notificationEmail}`);
+    } else {
+      console.error(`Failed to send failure notification: ${result.error}`);
+    }
+  } catch (error) {
+    // Don't fail the whole approval process if notification fails
+    console.error('Error sending failure notification:', error);
+  }
+}
 
 async function main() {
   try {
@@ -93,6 +181,12 @@ async function main() {
           } else {
             console.log(`  ${result.platform}: FAILED - ${result.error}`);
           }
+        }
+
+        // Send failure notification if any platforms failed
+        if (summary.failedPlatforms.length > 0) {
+          const postTitle = post.digest?.title || 'Digest';
+          await sendFailureNotification(postId, postTitle, summary.results);
         }
       } else {
         console.log('No platforms configured - digest approved but not posted');
