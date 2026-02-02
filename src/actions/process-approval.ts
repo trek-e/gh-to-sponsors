@@ -3,14 +3,16 @@
  * Process approval action
  *
  * Processes approval/skip actions from repository_dispatch events.
- * This is executed by GitHub Actions when user clicks approval link.
+ * On approval, posts to all configured platforms.
  */
 
-import { loadState, saveState, updatePostStatus, markTokenUsed } from '../state/index.js';
+import { loadState, saveState, updatePostStatus, markTokenUsed, updatePlatformResults } from '../state/index.js';
+import { getReadyPlatforms } from '../platforms/setup.js';
+import { postToAllPlatforms, resultsToStateFormat } from '../platforms/executor.js';
 
 async function main() {
   try {
-    console.log('🚀 Starting approval processing...');
+    console.log('Starting approval processing...');
 
     // Get payload from environment variables
     const postId = process.env.POST_ID;
@@ -33,50 +35,84 @@ async function main() {
     console.log(`Timestamp: ${timestamp}`);
 
     // Load current state
-    const state = await loadState();
-    console.log('✓ State loaded');
+    let state = await loadState();
+    console.log('State loaded');
 
     // Check if post exists
-    if (!state.posts[postId]) {
-      console.error(`❌ Post ${postId} not found in state`);
+    const post = state.posts[postId];
+    if (!post) {
+      console.error(`Post ${postId} not found in state`);
       process.exit(1);
     }
 
     // Check if jti already used
     if (state.usedTokens.includes(jti)) {
-      console.log(`ℹ️  Token ${jti} already used - this is a duplicate request`);
-      console.log('✓ No action needed');
+      console.log(`Token ${jti} already used - this is a duplicate request`);
+      console.log('No action needed');
       return;
     }
 
     // Update state based on action
-    let newState = state;
-
     if (action === 'skip') {
       console.log('Marking digest as skipped...');
-      newState = updatePostStatus(state, postId, 'skipped');
-      console.log('✓ Digest skipped');
+      state = updatePostStatus(state, postId, 'skipped');
+      console.log('Digest skipped');
     } else if (action === 'approve') {
       console.log('Marking digest as approved...');
-      newState = updatePostStatus(state, postId, 'approved');
-      console.log('✓ Digest approved');
-      console.log('ℹ️  Platform posting will occur in Phase 3+');
+      state = updatePostStatus(state, postId, 'approved');
+
+      // Post to all configured platforms
+      const platforms = getReadyPlatforms();
+      console.log(`Found ${platforms.length} configured platform(s): ${platforms.map(p => p.name).join(', ') || 'none'}`);
+
+      if (platforms.length > 0) {
+        console.log('Posting to platforms...');
+        const summary = await postToAllPlatforms(platforms, post);
+
+        // Update state with platform results
+        const platformStates = resultsToStateFormat(summary.results);
+        state = updatePlatformResults(state, postId, platformStates);
+
+        // Log results
+        if (summary.allSucceeded) {
+          console.log(`Posted successfully to all ${platforms.length} platform(s)`);
+          state = updatePostStatus(state, postId, 'posted');
+        } else if (summary.anySucceeded) {
+          console.log(`Partial success: ${summary.successfulPlatforms.join(', ')}`);
+          console.log(`Failed: ${summary.failedPlatforms.join(', ')}`);
+          // Keep status as 'approved' for partial success - user may want to retry failed
+        } else {
+          console.log(`All platforms failed: ${summary.failedPlatforms.join(', ')}`);
+          // Keep status as 'approved' - user may want to retry
+        }
+
+        // Log individual results
+        for (const result of summary.results) {
+          if (result.success) {
+            console.log(`  ${result.platform}: ${result.postUrl || 'posted'}`);
+          } else {
+            console.log(`  ${result.platform}: FAILED - ${result.error}`);
+          }
+        }
+      } else {
+        console.log('No platforms configured - digest approved but not posted');
+      }
     } else {
-      console.error(`❌ Unknown action: ${action}`);
+      console.error(`Unknown action: ${action}`);
       process.exit(1);
     }
 
     // Mark token as used for replay prevention
-    newState = markTokenUsed(newState, jti);
-    console.log('✓ Token marked as used');
+    state = markTokenUsed(state, jti);
+    console.log('Token marked as used');
 
     // Save updated state
-    await saveState(newState);
-    console.log('✓ State saved');
+    await saveState(state);
+    console.log('State saved');
 
-    console.log('✅ Approval processing complete!');
+    console.log('Approval processing complete!');
   } catch (error) {
-    console.error('❌ Error processing approval:', error);
+    console.error('Error processing approval:', error);
     process.exit(1);
   }
 }
