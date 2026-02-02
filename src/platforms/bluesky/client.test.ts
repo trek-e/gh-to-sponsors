@@ -15,12 +15,12 @@ vi.mock('@atproto/api', () => {
       login: vi.fn(),
       post: vi.fn(),
     })),
-    RichText: vi.fn().mockImplementation((params) => ({
+    RichText: vi.fn().mockImplementation((params: any) => ({
       text: params.text,
       graphemeLength: params.text.length,
       facets: [],
       detectFacets: vi.fn().mockResolvedValue(undefined),
-    })),
+    }) as any),
   };
 });
 
@@ -30,6 +30,14 @@ import { AtpAgent, RichText } from '@atproto/api';
 describe('BlueskyPlugin', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Reset RichText mock to default behavior
+    vi.mocked(RichText).mockImplementation((params: any) => ({
+      text: params.text,
+      graphemeLength: params.text.length,
+      facets: [],
+      detectFacets: vi.fn().mockResolvedValue(undefined),
+    }) as any);
   });
 
   const makePostState = (overrides: Partial<PostState> = {}): PostState => ({
@@ -135,12 +143,12 @@ describe('BlueskyPlugin', () => {
         });
 
         // Mock RichText to report actual length
-        vi.mocked(RichText).mockImplementation((params) => ({
+        vi.mocked(RichText).mockImplementation((params: any) => ({
           text: params.text,
           graphemeLength: 301,
           facets: [],
           detectFacets: vi.fn().mockResolvedValue(undefined),
-        }));
+        }) as any);
 
         const result = await plugin.post(state);
 
@@ -223,12 +231,12 @@ describe('BlueskyPlugin', () => {
           post: mockPost,
         }) as unknown as InstanceType<typeof AtpAgent>);
 
-        vi.mocked(RichText).mockImplementation((params) => ({
+        vi.mocked(RichText).mockImplementation((params: any) => ({
           text: params.text,
           graphemeLength: params.text.length,
-          facets: [{ index: { byteStart: 0, byteEnd: 5 } }],
+          facets: [{ index: { byteStart: 0, byteEnd: 5 }, features: [] }],
           detectFacets: mockDetectFacets,
-        }));
+        }) as any);
 
         const plugin = new BlueskyPlugin(
           'user.bsky.social',
