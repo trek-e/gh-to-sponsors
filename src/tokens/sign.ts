@@ -3,7 +3,7 @@
  */
 
 import { createHmac, randomUUID } from 'node:crypto';
-import type { TokenPayload } from '../types/token.js';
+import type { TokenPayload, RetryTokenPayload } from '../types/token.js';
 
 /**
  * Signs a token payload with HMAC-SHA256
@@ -49,6 +49,39 @@ export function generateApprovalToken(
   const payload: TokenPayload = {
     postId,
     action,
+    exp: Date.now() + (ttlHours * 60 * 60 * 1000),
+    jti: randomUUID()
+  };
+
+  return signToken(payload, secret);
+}
+
+/**
+ * Generates a retry token for failed platform posts
+ *
+ * Creates a token with:
+ * - postId: The post to retry posting
+ * - action: 'retry'
+ * - platforms: Which platforms to retry
+ * - exp: Expiration timestamp (now + ttlHours)
+ * - jti: Unique token ID for replay prevention
+ *
+ * @param postId - Post identifier
+ * @param platforms - List of platforms to retry posting to
+ * @param ttlHours - Token time-to-live in hours
+ * @param secret - HMAC secret key
+ * @returns Signed token string
+ */
+export function generateRetryToken(
+  postId: string,
+  platforms: string[],
+  ttlHours: number,
+  secret: string
+): string {
+  const payload: RetryTokenPayload = {
+    postId,
+    action: 'retry',
+    platforms,
     exp: Date.now() + (ttlHours * 60 * 60 * 1000),
     jti: randomUUID()
   };
