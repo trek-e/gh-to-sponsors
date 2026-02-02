@@ -34,8 +34,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Supporter Platforms
 
-- [ ] **SUPP-01**: System posts to Patreon on approval
-- [ ] **SUPP-02**: System posts to Ghost on approval
+- [ ] **SUPP-01**: System posts to Ghost on approval
 
 ### Social Platforms
 
@@ -80,6 +79,7 @@ Explicitly excluded. Documented to prevent scope creep.
 | Feature | Reason |
 |---------|--------|
 | Ko-fi integration | No posting API exists (webhook-only for payment notifications) |
+| Patreon integration | No posting API exists (read-only API, cannot create posts) |
 | X/Twitter integration | Platform enables fascism — values-aligned exclusion |
 | Meta platforms (Facebook, Instagram, Threads) | Same reasoning as X/Twitter |
 | Edit-before-send workflow | Approve/skip is sufficient for v1 |
@@ -108,7 +108,6 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-03 | Phase 2 | Complete |
 | SUPP-01 | Phase 3 | Pending |
 | EXTN-01 | Phase 3 | Pending |
-| SUPP-02 | Phase 4 | Pending |
 | SOCL-01 | Phase 4 | Pending |
 | SOCL-02 | Phase 4 | Pending |
 | GHUB-03 | Phase 5 | Pending |
@@ -117,10 +116,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXTN-02 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 22 total
-- Mapped to phases: 22 ✓
+- v1 requirements: 21 total
+- Mapped to phases: 21 ✓
 - Unmapped: 0
 
 ---
 *Requirements defined: 2025-02-01*
-*Last updated: 2026-02-02 after Phase 2 completion*
+*Last updated: 2026-02-02 — Patreon descoped (no posting API)*
