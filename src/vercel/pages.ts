@@ -120,6 +120,24 @@ export function renderSuccessPage(action: 'approve' | 'skip'): string {
 }
 
 /**
+ * Renders success page after retry request
+ */
+export function renderRetryPage(platforms: string[]): string {
+  const platformList = platforms.map(p => escapeHtml(p)).join(', ');
+
+  const content = `
+    <div class="icon">↻</div>
+    <h1>Retry Requested</h1>
+    <p class="message">Retrying posting to: ${platformList}</p>
+    <div class="footer">
+      <p>You can safely close this page. You'll receive confirmation once posting is complete.</p>
+    </div>
+  `;
+
+  return baseTemplate('Retry Requested', content);
+}
+
+/**
  * Renders error page for invalid/expired tokens
  */
 export function renderErrorPage(reason: TokenReason): string {

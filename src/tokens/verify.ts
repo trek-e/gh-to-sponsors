@@ -69,7 +69,17 @@ export function verifyToken(
       return { valid: false, reason: 'already-used' };
     }
 
-    // All checks passed
+    // All checks passed - return appropriate result based on action type
+    if (payload.action === 'retry') {
+      return {
+        valid: true,
+        postId: payload.postId,
+        action: 'retry',
+        platforms: payload.platforms,
+        jti: payload.jti
+      };
+    }
+
     return {
       valid: true,
       postId: payload.postId,

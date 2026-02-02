@@ -52,6 +52,43 @@ export async function triggerPosting(
 }
 
 /**
+ * Triggers a repository_dispatch event to retry failed platform posts
+ *
+ * @param postId - Post identifier from digest state
+ * @param platforms - List of platforms to retry posting to
+ * @param jti - Token jti for replay prevention
+ * @throws Error if GitHub API call fails
+ */
+export async function triggerRetry(
+  postId: string,
+  platforms: string[],
+  jti: string
+): Promise<void> {
+  const owner = process.env.GITHUB_OWNER;
+  const repo = process.env.GITHUB_REPO;
+  const token = process.env.GITHUB_TOKEN;
+
+  if (!owner || !repo || !token) {
+    throw new Error('Missing required environment variables: GITHUB_OWNER, GITHUB_REPO, GITHUB_TOKEN');
+  }
+
+  const octokit = new Octokit({ auth: token });
+
+  await octokit.repos.createDispatchEvent({
+    owner,
+    repo,
+    event_type: 'retry-requested',
+    client_payload: {
+      postId,
+      action: 'retry',
+      platforms,
+      jti,
+      timestamp: new Date().toISOString()
+    }
+  });
+}
+
+/**
  * Downloads and parses the digest-state artifact from GitHub Actions
  *
  * Used by Vercel Function to check if tokens are already used and

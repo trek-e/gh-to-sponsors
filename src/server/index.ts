@@ -7,8 +7,8 @@
 
 import express, { Request, Response, NextFunction } from 'express';
 import { verifyToken } from '../tokens/verify.js';
-import { getArtifactState, triggerPosting } from '../vercel/github.js';
-import { renderSuccessPage, renderErrorPage, renderStatusPage } from '../vercel/pages.js';
+import { getArtifactState, triggerPosting, triggerRetry } from '../vercel/github.js';
+import { renderSuccessPage, renderErrorPage, renderStatusPage, renderRetryPage } from '../vercel/pages.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -67,6 +67,21 @@ app.get('/api/approve/:token', async (req: Request, res: Response) => {
     // Check if post already exists and has been handled
     const post = state.posts[postId];
 
+    // Handle retry action
+    if (action === 'retry') {
+      // Retry tokens should only work for approved posts that have failed platforms
+      if (!post) {
+        return res.status(404).type('html').send(renderErrorPage('malformed'));
+      }
+
+      // Trigger retry for the specified platforms
+      await triggerRetry(postId, verification.platforms, jti);
+
+      // Return retry success page
+      return res.status(200).type('html').send(renderRetryPage(verification.platforms));
+    }
+
+    // Handle approval/skip actions
     if (post) {
       // If post is already approved, skipped, or posted, show status
       if (post.status === 'approved' || post.status === 'skipped' || post.status === 'posted') {
