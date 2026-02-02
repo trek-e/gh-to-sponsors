@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 4 of 6 (Multi-Platform Expansion)
-Plan: 2 of 3 complete (04-03)
+Plan: 2 of 3 complete (04-02)
 Status: In progress
-Last activity: 2026-02-02 - Completed 04-03-PLAN.md (Mastodon plugin)
+Last activity: 2026-02-02 - Completed 04-02-PLAN.md (Bluesky plugin)
 
-Progress: [█████████████████░░░] ~84% (Phase 1-3 complete, Phase 4 nearly complete)
+Progress: [█████████████████░░░] ~85% (Phase 1-3 complete, Phase 4 Wave 2 complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
-- Average duration: 2.4 minutes
-- Total execution time: 0.76 hours
+- Total plans completed: 20
+- Average duration: 2.5 minutes
+- Total execution time: 0.85 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [█████████████████░░░] ~84% (P
 | 1 - Foundation & Approval Loop | 7/7 | 18 min | 2.6 min |
 | 2 - Content Generation | 5/5 | 12 min | 2.4 min |
 | 3 - First Platform Integration | 5/5 | 15 min | 3.0 min |
-| 4 - Multi-Platform Expansion | 2/3 | 5 min | 2.5 min |
+| 4 - Multi-Platform Expansion | 2/3 | 12 min | 6.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-04 (1 min), 03-05 (4 min), 04-01 (2 min), 04-03 (3 min)
-- Trend: Maintaining fast execution velocity
+- Last 5 plans: 03-05 (4 min), 04-01 (2 min), 04-02 (7 min)
+- Trend: TDD plans take longer (test writing overhead) but deliver high quality
 
 *Updated after each plan completion*
 
@@ -165,6 +165,13 @@ Recent decisions affecting current work:
 - Platform configs optional in PlatformsConfig (backward compatibility)
 - Official SDKs: @atproto/api for Bluesky, masto for Mastodon
 
+**From 04-02:**
+- App password auth over OAuth for Bluesky (official guidance for bots)
+- RichText class for facet detection (handles UTF-8/UTF-16 byte offset complexity)
+- Grapheme length validation not string.length (Bluesky 300 grapheme limit)
+- Lazy authentication pattern (login on first getAgent() call)
+- Exponential backoff retry pattern from GhostPlugin (consistent across platforms)
+
 **From 04-03:**
 - MastodonPlugin uses masto SDK createRestAPIClient for OAuth token auth
 - Posts use teaser content not digest (Mastodon for brief updates)
@@ -191,14 +198,14 @@ Recent decisions affecting current work:
 - Source: Ghost Admin -> Settings -> Integrations -> Add custom integration
 
 **User Setup Required for Phase 4 Bluesky Integration:**
-- Set BLUESKY_IDENTIFIER (e.g., "user.bsky.social")
-- Set BLUESKY_APP_PASSWORD (from Bluesky Settings -> App Passwords)
-- Optional: Configure defaultLang in config.yml
+- Set BLUESKY_IDENTIFIER environment variable (e.g., "user.bsky.social")
+- Set BLUESKY_APP_PASSWORD environment variable (from Bluesky Settings -> App Passwords -> Create App Password)
+- Optional: Configure defaultLang in config (defaults to 'en')
 
 **User Setup Required for Phase 4 Mastodon Integration:**
-- Set MASTODON_ACCESS_TOKEN (from Mastodon app creation)
-- Configure instanceUrl in config.yml (e.g., "https://mastodon.social")
-- Optional: Configure visibility (public/unlisted/private)
+- Set MASTODON_INSTANCE_URL environment variable (e.g., "https://mastodon.social")
+- Set MASTODON_ACCESS_TOKEN environment variable (from Mastodon app creation)
+- Optional: Configure visibility in config (public/unlisted/private, defaults to 'public')
 
 ### Blockers/Concerns
 
@@ -226,15 +233,15 @@ Recent decisions affecting current work:
 - Failure notification emails with per-platform retry links
 - Ready for multi-platform expansion (Phase 4)
 
-**Phase 4 In Progress:**
+**Phase 4 Wave 2 Complete (Parallel Plugin Implementation):**
 - 04-01: Configuration types and Zod schemas complete
-- 04-03: MastodonPlugin complete with TDD tests (20 passing)
-- 04-02: Bluesky plugin (parallel with 04-03)
-- Remaining: 04-04 integration to register both plugins
+- 04-02: BlueskyPlugin complete (TDD, 19 tests passing, app password auth, RichText facets)
+- 04-03: MastodonPlugin complete (TDD, 20 tests passing, REST API client)
+- Next: 04-04 platform registration to integrate both plugins
 
 ## Session Continuity
 
-Last session: 2026-02-02 22:42 UTC
-Stopped at: Completed 04-03-PLAN.md (Mastodon plugin)
+Last session: 2026-02-02 22:46 UTC
+Stopped at: Completed 04-02-PLAN.md (Bluesky plugin implementation)
 Resume file: None
-Next action: Complete 04-02 (Bluesky plugin) or proceed to 04-04 (integration)
+Next action: Proceed to 04-04 (platform registration) to integrate both Bluesky and Mastodon
