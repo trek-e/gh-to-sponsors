@@ -238,3 +238,167 @@ function escapeHtml(text: string): string {
   };
   return text.replace(/[&<>"']/g, (char) => map[char]);
 }
+
+/**
+ * Platform result for failure notification
+ */
+export interface PlatformResult {
+  name: string;
+  success: boolean;
+  postUrl?: string;
+  error?: string;
+}
+
+/**
+ * Data for failure notification email
+ */
+export interface FailureNotificationData {
+  postTitle: string;
+  successfulPlatforms: Array<{ name: string; postUrl?: string }>;
+  failedPlatforms: Array<{ name: string; error: string; retryLink: string }>;
+  expirationHours: number;
+}
+
+/**
+ * Renders the failure notification email with both HTML and plain text versions
+ */
+export function renderFailureNotificationEmail(data: FailureNotificationData): EmailTemplate {
+  const failedCount = data.failedPlatforms.length;
+  const subject = `Posting failed: ${failedCount} platform${failedCount === 1 ? '' : 's'} need attention`;
+
+  const html = renderFailureHTMLEmail(data);
+  const text = renderFailurePlainTextEmail(data);
+
+  return { html, text, subject };
+}
+
+function renderFailureHTMLEmail(data: FailureNotificationData): string {
+  const successSection = data.successfulPlatforms.length > 0 ? `
+          <!-- Successful Platforms -->
+          <tr>
+            <td style="padding: 0 32px 24px;">
+              <div style="background: #d4edda; padding: 16px; border-radius: 8px; border-left: 4px solid #28a745;">
+                <strong style="font-size: 14px; color: #155724;">Posted Successfully:</strong>
+                ${data.successfulPlatforms.map(p => `
+                  <div style="margin: 8px 0 0 0; font-size: 14px; color: #155724;">
+                    ${escapeHtml(p.name)}${p.postUrl ? ` - <a href="${escapeHtml(p.postUrl)}" style="color: #155724;">View Post</a>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            </td>
+          </tr>` : '';
+
+  const failedSection = `
+          <!-- Failed Platforms -->
+          <tr>
+            <td style="padding: 0 32px 24px;">
+              <div style="background: #f8d7da; padding: 16px; border-radius: 8px; border-left: 4px solid #dc3545;">
+                <strong style="font-size: 14px; color: #721c24;">Failed to Post:</strong>
+                ${data.failedPlatforms.map(p => `
+                  <div style="margin: 12px 0 0 0;">
+                    <div style="font-size: 14px; color: #721c24; font-weight: 500;">${escapeHtml(p.name)}</div>
+                    <div style="font-size: 12px; color: #856404; margin: 4px 0;">Error: ${escapeHtml(p.error)}</div>
+                    <a href="${escapeHtml(p.retryLink)}"
+                       style="display: inline-block; margin-top: 8px; background-color: #dc3545; color: #ffffff; text-align: center; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 14px;">
+                      Retry ${escapeHtml(p.name)}
+                    </a>
+                  </div>
+                `).join('')}
+              </div>
+            </td>
+          </tr>`;
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #f6f8fa;">
+  <table role="presentation" style="width: 100%; border-collapse: collapse;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" style="max-width: 600px; width: 100%; background-color: #ffffff; border: 1px solid #d0d7de; border-radius: 6px; overflow: hidden;">
+
+          <!-- Header -->
+          <tr>
+            <td style="padding: 32px 32px 24px;">
+              <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 600; color: #24292f; line-height: 1.25;">
+                Posting Results
+              </h1>
+              <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #57606a;">
+                Your digest "${escapeHtml(data.postTitle)}" had some issues during posting.
+              </p>
+            </td>
+          </tr>
+
+          ${successSection}
+
+          ${failedSection}
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 24px 32px 32px; border-top: 1px solid #d0d7de; background-color: #f6f8fa;">
+              <p style="margin: 0 0 8px; font-size: 14px; line-height: 1.5; color: #57606a;">
+                <strong>Retry links expire in ${data.expirationHours} hours</strong>
+              </p>
+              <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #6e7781;">
+                This email was sent from your gh-to-sponsors automation workflow.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+function renderFailurePlainTextEmail(data: FailureNotificationData): string {
+  const lines = [
+    'POSTING RESULTS',
+    '='.repeat(50),
+    '',
+    `Your digest "${data.postTitle}" had some issues during posting.`,
+    '',
+  ];
+
+  if (data.successfulPlatforms.length > 0) {
+    lines.push(
+      'POSTED SUCCESSFULLY',
+      '-------------------',
+      ''
+    );
+    for (const p of data.successfulPlatforms) {
+      lines.push(`  ${p.name}${p.postUrl ? ` - ${p.postUrl}` : ''}`);
+    }
+    lines.push('');
+  }
+
+  lines.push(
+    'FAILED TO POST',
+    '--------------',
+    ''
+  );
+  for (const p of data.failedPlatforms) {
+    lines.push(`  ${p.name}`);
+    lines.push(`    Error: ${p.error}`);
+    lines.push(`    Retry: ${p.retryLink}`);
+    lines.push('');
+  }
+
+  lines.push(
+    'IMPORTANT',
+    '---------',
+    '',
+    `Retry links expire in ${data.expirationHours} hours`,
+    '',
+    'This email was sent from your gh-to-sponsors automation workflow.',
+    '',
+    '='.repeat(50)
+  );
+
+  return lines.join('\n');
+}
