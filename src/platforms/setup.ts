@@ -7,6 +7,7 @@
 
 import { registerPlatform, getConfiguredPlatforms } from './registry.js';
 import { GhostPlugin } from './ghost/index.js';
+import { BlueskyPlugin } from './bluesky/index.js';
 import type { PlatformPlugin } from './types.js';
 
 let initialized = false;
@@ -32,8 +33,18 @@ export function setupPlatforms(): void {
     return new GhostPlugin(url, apiKey, defaultTags, defaultStatus);
   });
 
+  // Register Bluesky plugin
+  // Config from env vars: BLUESKY_IDENTIFIER, BLUESKY_APP_PASSWORD
+  // Optional: BLUESKY_DEFAULT_LANG (defaults to 'en')
+  registerPlatform('bluesky', () => {
+    const identifier = process.env.BLUESKY_IDENTIFIER;
+    const appPassword = process.env.BLUESKY_APP_PASSWORD;
+    const defaultLang = process.env.BLUESKY_DEFAULT_LANG || 'en';
+
+    return new BlueskyPlugin(identifier, appPassword, defaultLang);
+  });
+
   // Future platforms will be registered here:
-  // registerPlatform('bluesky', () => new BlueskyPlugin(...));
   // registerPlatform('mastodon', () => new MastodonPlugin(...));
 
   initialized = true;
