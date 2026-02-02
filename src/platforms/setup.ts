@@ -8,6 +8,7 @@
 import { registerPlatform, getConfiguredPlatforms } from './registry.js';
 import { GhostPlugin } from './ghost/index.js';
 import { BlueskyPlugin } from './bluesky/index.js';
+import { MastodonPlugin } from './mastodon/index.js';
 import type { PlatformPlugin } from './types.js';
 
 let initialized = false;
@@ -44,8 +45,16 @@ export function setupPlatforms(): void {
     return new BlueskyPlugin(identifier, appPassword, defaultLang);
   });
 
-  // Future platforms will be registered here:
-  // registerPlatform('mastodon', () => new MastodonPlugin(...));
+  // Register Mastodon plugin
+  // Config from env vars: MASTODON_INSTANCE_URL, MASTODON_ACCESS_TOKEN
+  // Optional: MASTODON_VISIBILITY (defaults to 'public')
+  registerPlatform('mastodon', () => {
+    const instanceUrl = process.env.MASTODON_INSTANCE_URL;
+    const accessToken = process.env.MASTODON_ACCESS_TOKEN;
+    const visibility = (process.env.MASTODON_VISIBILITY as 'public' | 'unlisted' | 'private') || 'public';
+
+    return new MastodonPlugin(instanceUrl, accessToken, visibility);
+  });
 
   initialized = true;
 }
