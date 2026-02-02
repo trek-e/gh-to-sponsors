@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Creators approve one email and their supporters on every platform get updated
-**Current focus:** Phase 3 - First Platform Integration (Ghost CMS)
+**Current focus:** Phase 3 - First Platform Integration (Ghost CMS) - COMPLETE
 
 ## Current Position
 
-Phase: 3 of 6 (First Platform Integration)
-Plan: 4 of 5 complete (03-01, 03-02, 03-03, 03-04)
-Status: In progress
-Last activity: 2026-02-02 - Completed 03-04-PLAN.md (approval integration)
+Phase: 3 of 6 (First Platform Integration) - COMPLETE
+Plan: 5 of 5 complete (03-01, 03-02, 03-03, 03-04, 03-05)
+Status: Phase complete
+Last activity: 2026-02-02 - Completed 03-05-PLAN.md (failure notifications)
 
-Progress: [██████████████░░░░░░] ~75% (Phase 1 + Phase 2 + Phase 3 partial)
+Progress: [████████████████░░░░] ~80% (Phase 1 + Phase 2 + Phase 3)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
-- Average duration: 2.3 minutes
-- Total execution time: 0.62 hours
+- Total plans completed: 17
+- Average duration: 2.4 minutes
+- Total execution time: 0.68 hours
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [██████████████░░░░░░] ~75% (P
 |-------|-------|-------|----------|
 | 1 - Foundation & Approval Loop | 7/7 | 18 min | 2.6 min |
 | 2 - Content Generation | 5/5 | 12 min | 2.4 min |
-| 3 - First Platform Integration | 4/5 | 11 min | 2.8 min |
+| 3 - First Platform Integration | 5/5 | 15 min | 3.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (2 min), 03-02 (4 min), 03-03 (4 min), 03-04 (1 min)
+- Last 5 plans: 03-02 (4 min), 03-03 (4 min), 03-04 (1 min), 03-05 (4 min)
 - Trend: Consistent fast execution
 
 *Updated after each plan completion*
@@ -152,6 +152,12 @@ Recent decisions affecting current work:
 - Status 'posted' only on all-platform success, 'approved' on partial/failure for retry
 - Idempotent platform setup (initialized flag prevents duplicate registration)
 
+**From 03-05:**
+- Retry tokens use same HMAC signing as approval tokens
+- Per-platform retry links (not all-or-nothing)
+- Failure notification sent automatically when any platform fails
+- Environment variables: HMAC_SECRET, APPROVAL_URL, NOTIFICATION_EMAIL
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -189,15 +195,16 @@ Recent decisions affecting current work:
 - Approval emails show digest and teaser preview
 - State stores content for Phase 3 platform posting
 
-**Phase 3 Progress:**
+**Phase 3 Complete:**
 - Ghost platform plugin complete with Admin API integration
 - Platform executor handles multi-platform posting with error isolation
 - Approval integration wires platform posting into approval flow
-- Ready for end-to-end testing (03-05)
+- Failure notification emails with per-platform retry links
+- Ready for multi-platform expansion (Phase 4)
 
 ## Session Continuity
 
-Last session: 2026-02-02 14:24 UTC
-Stopped at: Completed 03-04-PLAN.md (approval integration)
+Last session: 2026-02-02 14:35 UTC
+Stopped at: Completed 03-05-PLAN.md (failure notifications)
 Resume file: None
-Next action: Execute 03-05 (end-to-end integration testing)
+Next action: Begin Phase 4 (Multi-Platform Expansion)
