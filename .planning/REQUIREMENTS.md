@@ -34,7 +34,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Supporter Platforms
 
-- [ ] **SUPP-01**: System posts to Ghost on approval
+- [x] **SUPP-01**: System posts to Ghost on approval
 
 ### Social Platforms
 
@@ -43,7 +43,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Extensibility
 
-- [ ] **EXTN-01**: Plugin architecture allows adding new platforms
+- [x] **EXTN-01**: Plugin architecture allows adding new platforms
 - [ ] **EXTN-02**: Documentation exists for creating platform plugins
 
 ### Infrastructure
@@ -106,8 +106,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-01 | Phase 2 | Complete |
 | CONT-02 | Phase 2 | Complete |
 | CONT-03 | Phase 2 | Complete |
-| SUPP-01 | Phase 3 | Pending |
-| EXTN-01 | Phase 3 | Pending |
+| SUPP-01 | Phase 3 | Complete |
+| EXTN-01 | Phase 3 | Complete |
 | SOCL-01 | Phase 4 | Pending |
 | SOCL-02 | Phase 4 | Pending |
 | GHUB-03 | Phase 5 | Pending |
@@ -122,4 +122,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2025-02-01*
-*Last updated: 2026-02-02 — Patreon descoped (no posting API)*
+*Last updated: 2026-02-02 — Phase 3 complete (Ghost + plugin architecture)*
