@@ -6,7 +6,7 @@ import { promises as fs } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { randomBytes } from 'node:crypto';
-import type { DigestState, PostState, PostStatus, PlatformResult } from '../types/state.js';
+import type { DigestState, PostState, PostStatus, PlatformPostState } from '../types/state.js';
 
 export const DEFAULT_STATE_PATH = '.state/digest.json';
 
@@ -78,7 +78,7 @@ export function updatePostStatus(
   state: DigestState,
   postId: string,
   status: PostStatus,
-  platforms?: Record<string, PlatformResult>
+  platforms?: Record<string, PlatformPostState>
 ): DigestState {
   const existingPost = state.posts[postId];
 

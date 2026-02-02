@@ -174,9 +174,12 @@ export function renderStatusPage(post: PostState): string {
   const platformList = Object.entries(post.platforms).length > 0
     ? Object.entries(post.platforms)
         .map(([platform, result]) => {
-          const statusClass = result === 'success' ? 'success' : 'failed';
-          const icon = result === 'success' ? '✓' : '✗';
-          return `<div class="platform-item ${statusClass}">${icon} ${escapeHtml(platform)}: ${result}</div>`;
+          const statusClass = result.status === 'success' ? 'success' : 'failed';
+          const icon = result.status === 'success' ? '✓' : '✗';
+          const displayText = result.postUrl
+            ? `<a href="${escapeHtml(result.postUrl)}">${result.status}</a>`
+            : result.status;
+          return `<div class="platform-item ${statusClass}">${icon} ${escapeHtml(platform)}: ${displayText}</div>`;
         })
         .join('\n')
     : '<p>No platform posting results yet.</p>';
