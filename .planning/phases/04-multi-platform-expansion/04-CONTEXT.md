@@ -14,7 +14,7 @@ Single approval posts teasers to Bluesky and Mastodon with links back to full co
 ## Implementation Decisions
 
 ### Authentication Approach
-- Bluesky: OAuth flow (not app passwords)
+- Bluesky: App password (research confirmed this is officially recommended for bots over OAuth)
 - Mastodon: OAuth with token refresh
 - Instance URL for Mastodon: Check env var first, fall back to config file
 - If token refresh fails: Email user with re-auth instructions (same pattern as Ghost)
