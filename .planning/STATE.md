@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Creators approve one email and their supporters on every platform get updated
-**Current focus:** Phase 2 - Content Generation
+**Current focus:** Phase 2 Complete - Ready for Phase 3
 
 ## Current Position
 
-Phase: 2 of 6 (Content Generation)
-Plan: 4 of 5 complete
-Status: In progress
-Last activity: 2026-02-02 - Completed 02-04-PLAN.md (LLM integration)
+Phase: 2 of 6 (Content Generation) - COMPLETE
+Plan: 5 of 5 complete
+Status: Phase complete
+Last activity: 2026-02-02 - Completed 02-05-PLAN.md (orchestration)
 
-Progress: [█████████░] 80% Phase 1 + 80% Phase 2
+Progress: [██████████] 100% Phase 1 + 100% Phase 2
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 2.4 minutes
-- Total execution time: 0.43 hours
+- Total execution time: 0.47 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 - Foundation & Approval Loop | 7/7 | 18 min | 2.6 min |
-| 2 - Content Generation | 4/5 | 10 min | 2.5 min |
+| 2 - Content Generation | 5/5 | 12 min | 2.4 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (2 min), 02-02 (2 min), 02-03 (3 min), 02-04 (3 min)
+- Last 5 plans: 02-02 (2 min), 02-03 (3 min), 02-04 (3 min), 02-05 (2 min)
 - Trend: Consistent fast execution
 
 *Updated after each plan completion*
@@ -119,6 +119,12 @@ Recent decisions affecting current work:
 - Zod schema validation for teaser structure
 - Warn-only validation for digests (don't fail on missing links)
 
+**From 02-05:**
+- Store digest/teaser in PostState (enables posting without regeneration)
+- Optional fields for backward compatibility with existing state
+- Show teaser in email preview (user can review before approving)
+- Content hash uses actual digest content for unique post ID
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -129,7 +135,7 @@ Recent decisions affecting current work:
 - See: .planning/phases/01-foundation-approval-loop/01-07-SUMMARY.md
 
 **User Setup Required for Phase 2 Content Generation:**
-- Set ANTHROPIC_API_KEY environment variable
+- Set ANTHROPIC_API_KEY environment variable (GitHub secret + Vercel)
 - Source: Anthropic Console -> API Keys -> Create key
 
 ### Blockers/Concerns
@@ -145,9 +151,15 @@ Recent decisions affecting current work:
 - User must complete deployment steps from 01-07-SUMMARY.md
 - Once verified, Phase 1 is operationally complete
 
+**Phase 2 Complete:**
+- Content generation pipeline fully integrated
+- generate-digest action produces real AI-generated content
+- Approval emails show digest and teaser preview
+- State stores content for Phase 3 platform posting
+
 ## Session Continuity
 
-Last session: 2026-02-02 03:04 UTC
-Stopped at: Completed 02-04-PLAN.md (LLM integration)
+Last session: 2026-02-02 03:08 UTC
+Stopped at: Completed 02-05-PLAN.md (orchestration) - Phase 2 complete
 Resume file: None
-Next action: Execute 02-05-PLAN.md (orchestration)
+Next action: Begin Phase 3 planning (platform integrations)
