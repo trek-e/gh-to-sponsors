@@ -1,0 +1,31 @@
+# gh-to-sponsors configuration
+# Copy to sponsors.yaml and fill in your values
+
+email:
+  provider: resend  # resend, ses, or sendgrid
+  apiKey: ${EMAIL_API_KEY}  # Set via environment variable
+  fromEmail: updates@yourdomain.com
+  replyTo: you@yourdomain.com  # Optional
+
+approval:
+  expirationHours: 48  # 24 or 48
+  autoAction: none     # approve, skip, or none
+
+schedule:
+  cronExpression: "15 9 * * *"  # Daily at 9:15 AM UTC
+  timezone: UTC                  # Optional
+
+# GitHub repositories to monitor
+github:
+  repos:
+    - owner: your-username
+      repo: your-project
+      displayName: My Cool Project  # Optional, defaults to repo name
+    - owner: your-username
+      repo: another-repo
+      # No displayName - will use "another-repo"
+
+# Content generation settings (optional - defaults shown)
+content:
+  dailyThreshold: 1   # Minimum commits for daily digest
+  weeklyThreshold: 3  # Minimum commits for weekly digest
