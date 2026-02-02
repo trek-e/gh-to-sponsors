@@ -62,9 +62,26 @@ export const ghostConfigSchema = z.object({
   defaultStatus: z.enum(['draft', 'published']).default('draft'),
 });
 
+// Bluesky platform configuration schema
+// Note: Auth credentials come from BLUESKY_IDENTIFIER and BLUESKY_APP_PASSWORD env vars
+export const blueskyConfigSchema = z.object({
+  enabled: z.boolean().default(true),
+  defaultLang: z.string().default('en'),
+});
+
+// Mastodon platform configuration schema
+// Note: Access token comes from MASTODON_ACCESS_TOKEN env var
+export const mastodonConfigSchema = z.object({
+  enabled: z.boolean().default(true),
+  instanceUrl: z.string().url('Valid Mastodon instance URL required'),
+  visibility: z.enum(['public', 'unlisted', 'private']).default('public'),
+});
+
 // Platforms configuration schema
 export const platformsConfigSchema = z.object({
   ghost: ghostConfigSchema.optional(),
+  bluesky: blueskyConfigSchema.optional(),
+  mastodon: mastodonConfigSchema.optional(),
 });
 
 // Main configuration schema
