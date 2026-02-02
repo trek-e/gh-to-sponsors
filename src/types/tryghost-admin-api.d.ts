@@ -36,7 +36,13 @@ declare module '@tryghost/admin-api' {
     posts: Posts;
   }
 
-  function GhostAdminAPI(options: GhostAdminAPIOptions): GhostAdminAPIInstance;
+  // Callable constructor interface - supports both `new GhostAdminAPI()` and `GhostAdminAPI()`
+  interface GhostAdminAPIConstructor {
+    new (options: GhostAdminAPIOptions): GhostAdminAPIInstance;
+    (options: GhostAdminAPIOptions): GhostAdminAPIInstance;
+  }
+
+  const GhostAdminAPI: GhostAdminAPIConstructor;
 
   export default GhostAdminAPI;
 }
