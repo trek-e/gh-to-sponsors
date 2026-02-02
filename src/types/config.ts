@@ -2,6 +2,8 @@
  * Configuration type definitions
  */
 
+import type { PlatformsConfig } from './platform.js';
+
 export type EmailProvider = 'resend' | 'ses' | 'sendgrid';
 
 export interface EmailConfig {
@@ -51,4 +53,6 @@ export interface Config {
   github: GitHubConfig;
   /** Content generation settings (optional, has defaults) */
   content?: ContentConfig;
+  /** Platform publishing settings (optional) */
+  platforms?: PlatformsConfig;
 }

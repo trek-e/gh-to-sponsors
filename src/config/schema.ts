@@ -53,6 +53,20 @@ export const contentConfigSchema = z.object({
   weeklyThreshold: z.number().int().min(1).default(3),
 });
 
+// Ghost platform configuration schema
+// Note: apiKey comes from GHOST_ADMIN_API_KEY env var, not config file
+export const ghostConfigSchema = z.object({
+  enabled: z.boolean().default(true),
+  url: z.string().url('Valid Ghost URL required'),
+  defaultTags: z.array(z.string()).default(['devlog', 'opensource']),
+  defaultStatus: z.enum(['draft', 'published']).default('draft'),
+});
+
+// Platforms configuration schema
+export const platformsConfigSchema = z.object({
+  ghost: ghostConfigSchema.optional(),
+});
+
 // Main configuration schema
 export const configSchema = z.object({
   email: emailConfigSchema,
@@ -60,6 +74,7 @@ export const configSchema = z.object({
   schedule: scheduleConfigSchema,
   github: githubConfigSchema,
   content: contentConfigSchema.optional(),
+  platforms: platformsConfigSchema.optional(),
 });
 
 /**
