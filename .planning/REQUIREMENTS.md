@@ -9,15 +9,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### GitHub Monitoring
 
-- [ ] **GHUB-01**: User can configure one or more repos to monitor
-- [ ] **GHUB-02**: System monitors commits and aggregates activity
+- [x] **GHUB-01**: User can configure one or more repos to monitor
+- [x] **GHUB-02**: System monitors commits and aggregates activity
 - [ ] **GHUB-03**: System detects GitHub Releases and triggers announcements
 
 ### Content Generation
 
-- [ ] **CONT-01**: System generates digest from recent commits
-- [ ] **CONT-02**: System generates short teasers for social platforms
-- [ ] **CONT-03**: System supports simple templates using commit messages
+- [x] **CONT-01**: System generates digest from recent commits
+- [x] **CONT-02**: System generates short teasers for social platforms
+- [x] **CONT-03**: System supports simple templates using commit messages
 
 ### Scheduling
 
@@ -101,11 +101,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | APPR-03 | Phase 1 | Pending |
 | APPR-04 | Phase 1 | Pending |
 | SCHD-01 | Phase 1 | Pending |
-| GHUB-01 | Phase 2 | Pending |
-| GHUB-02 | Phase 2 | Pending |
-| CONT-01 | Phase 2 | Pending |
-| CONT-02 | Phase 2 | Pending |
-| CONT-03 | Phase 2 | Pending |
+| GHUB-01 | Phase 2 | Complete |
+| GHUB-02 | Phase 2 | Complete |
+| CONT-01 | Phase 2 | Complete |
+| CONT-02 | Phase 2 | Complete |
+| CONT-03 | Phase 2 | Complete |
 | SUPP-01 | Phase 3 | Pending |
 | EXTN-01 | Phase 3 | Pending |
 | SUPP-02 | Phase 4 | Pending |
@@ -123,4 +123,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2025-02-01*
-*Last updated: 2026-02-01 after roadmap creation*
+*Last updated: 2026-02-02 after Phase 2 completion*
