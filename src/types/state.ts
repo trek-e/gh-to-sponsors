@@ -12,6 +12,20 @@ export interface PostState {
   platforms: Record<string, PlatformResult>;
   createdAt: string;
   approvedAt?: string;
+  // Content fields (added in Phase 2)
+  digest?: {
+    title: string;
+    content: string;
+    repos: string[];
+    commitCount: number;
+    periodType: 'daily' | 'weekly';
+    generatedAt: string;
+  };
+  teaser?: {
+    text: string;
+    hashtags: string[];
+    characterCount: number;
+  };
 }
 
 export interface DigestState {

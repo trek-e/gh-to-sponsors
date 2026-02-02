@@ -9,6 +9,11 @@ export interface ApprovalEmailData {
   skipLink: string;
   previewLink?: string;
   expirationHours: number;
+  // Phase 2 content generation fields (optional for backward compatibility)
+  teaser?: string;
+  hashtags?: string[];
+  repos?: string[];
+  periodType?: 'daily' | 'weekly';
 }
 
 export interface EmailTemplate {
@@ -46,13 +51,31 @@ function renderHTMLEmail(data: ApprovalEmailData): string {
           <tr>
             <td style="padding: 32px 32px 24px;">
               <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 600; color: #24292f; line-height: 1.25;">
-                Your digest is ready
+                Your ${data.periodType || ''} digest is ready
               </h1>
-              <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #57606a;">
+              ${data.repos && data.repos.length > 0 ? `
+              <p style="margin: 0 0 12px; font-size: 14px; color: #6e7781;">
+                ${data.itemCount} commit${data.itemCount === 1 ? '' : 's'} from ${data.repos.join(', ')}
+              </p>
+              ` : ''}
+              <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #57606a; white-space: pre-wrap;">
                 ${escapeHtml(data.summary)}
               </p>
             </td>
           </tr>
+
+          ${data.teaser ? `
+          <!-- Social Teaser Preview -->
+          <tr>
+            <td style="padding: 0 32px 24px;">
+              <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; border-left: 4px solid #0969da;">
+                <strong style="font-size: 14px; color: #24292f;">Social Teaser:</strong>
+                <p style="margin: 8px 0 0 0; font-size: 14px; line-height: 1.5; color: #57606a;">${escapeHtml(data.teaser)}</p>
+                ${data.hashtags && data.hashtags.length > 0 ? `<p style="color: #6c757d; margin: 8px 0 0 0; font-size: 14px;">${data.hashtags.join(' ')}</p>` : ''}
+              </div>
+            </td>
+          </tr>
+          ` : ''}
 
           <!-- Action Buttons (Top) -->
           <tr>
@@ -134,20 +157,42 @@ function renderHTMLEmail(data: ApprovalEmailData): string {
 }
 
 function renderPlainTextEmail(data: ApprovalEmailData): string {
+  const periodLabel = data.periodType ? `${data.periodType.toUpperCase()} ` : '';
+  const repoInfo = data.repos && data.repos.length > 0
+    ? `\n${data.itemCount} commit${data.itemCount === 1 ? '' : 's'} from ${data.repos.join(', ')}\n`
+    : '';
+
   const lines = [
-    'YOUR DIGEST IS READY',
+    `YOUR ${periodLabel}DIGEST IS READY`,
     '='.repeat(50),
-    '',
+    repoInfo,
     data.summary,
     '',
+  ];
+
+  // Add teaser preview if available
+  if (data.teaser) {
+    lines.push(
+      'SOCIAL TEASER',
+      '-------------',
+      '',
+      data.teaser,
+      ''
+    );
+    if (data.hashtags && data.hashtags.length > 0) {
+      lines.push(data.hashtags.join(' '), '');
+    }
+  }
+
+  lines.push(
     'ACTIONS',
     '-------',
     '',
-    `✓ Approve and post: ${data.approveLink}`,
+    `Approve and post: ${data.approveLink}`,
     '',
-    `✗ Skip this digest: ${data.skipLink}`,
-    '',
-  ];
+    `Skip this digest: ${data.skipLink}`,
+    ''
+  );
 
   if (data.previewLink) {
     lines.push(
