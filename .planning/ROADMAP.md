@@ -2,7 +2,7 @@
 
 ## Overview
 
-A 6-phase journey to build a GitHub-to-supporter syndication tool that lets creators approve one email and update all platforms. We start with infrastructure and approval workflow, prove the plugin architecture with a single platform (Patreon), expand to all supporter and social platforms, add intelligent scheduling and releases detection, then enable community extensibility. Each phase delivers verifiable capabilities that build toward the core value: eliminating manual cross-posting friction for crowdfunded open source creators.
+A 6-phase journey to build a GitHub-to-supporter syndication tool that lets creators approve one email and update all platforms. We start with infrastructure and approval workflow, prove the plugin architecture with a single platform (Ghost), expand to all supporter and social platforms, add intelligent scheduling and releases detection, then enable community extensibility. Each phase delivers verifiable capabilities that build toward the core value: eliminating manual cross-posting friction for crowdfunded open source creators.
 
 ## Phases
 
@@ -14,8 +14,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Approval Loop** - Infrastructure, scheduling, and secure email-based approval workflow
 - [x] **Phase 2: Content Generation** - GitHub activity monitoring and digest creation
-- [ ] **Phase 3: First Platform Integration** - Patreon posting with OAuth and plugin architecture validation
-- [ ] **Phase 4: Multi-Platform Expansion** - Ghost, Bluesky, and Mastodon integrations
+- [ ] **Phase 3: First Platform Integration** - Ghost posting and plugin architecture validation
+- [ ] **Phase 4: Multi-Platform Expansion** - Bluesky and Mastodon integrations
 - [ ] **Phase 5: Intelligence & Releases** - GitHub Releases detection and adaptive scheduling
 - [ ] **Phase 6: Extensibility** - Plugin system documentation and community enablement
 
@@ -61,32 +61,33 @@ Plans:
 - [x] 02-05-PLAN.md — Integration into generate-digest action
 
 ### Phase 3: First Platform Integration
-**Goal**: Approved posts successfully publish to Patreon with OAuth authentication
+**Goal**: Approved posts successfully publish to Ghost CMS with Admin API authentication
 **Depends on**: Phase 2
 **Requirements**: SUPP-01, EXTN-01
 **Success Criteria** (what must be TRUE):
-  1. User authenticates with Patreon OAuth and tokens persist across runs
-  2. Approved content posts to Patreon feed successfully
-  3. OAuth tokens refresh automatically before expiration
-  4. Platform plugin interface defines contract for future platforms
-  5. System handles rate limits and retries failed posts with exponential backoff
-**Plans**: TBD
+  1. User configures Ghost Admin API credentials via GitHub secrets
+  2. Approved content posts to Ghost blog successfully
+  3. Platform plugin interface defines contract for future platforms
+  4. System handles rate limits and retries failed posts with exponential backoff
+  5. Plugin architecture isolates platform failures from each other
+**Plans**: 5 plans in 4 waves
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md — Platform types, plugin interface, and config schema (Wave 1)
+- [ ] 03-02-PLAN.md — Ghost plugin with Admin API and retry logic (Wave 2, TDD)
+- [ ] 03-03-PLAN.md — Platform executor with error isolation (Wave 2)
+- [ ] 03-04-PLAN.md — Wire platform posting into approval flow (Wave 3)
+- [ ] 03-05-PLAN.md — Failure notification emails with retry links (Wave 4)
 
 ### Phase 4: Multi-Platform Expansion
-**Goal**: Single approval posts to all configured platforms (Ghost, Bluesky, Mastodon)
+**Goal**: Single approval posts to all configured platforms (Bluesky, Mastodon)
 **Depends on**: Phase 3
-**Requirements**: SUPP-02, SOCL-01, SOCL-02
+**Requirements**: SOCL-01, SOCL-02
 **Success Criteria** (what must be TRUE):
-  1. Approved posts publish to Ghost blog with proper formatting
-  2. Teasers post to Bluesky with link back to full content
-  3. Teasers post to Mastodon with link back to full content
-  4. User can enable/disable platforms via configuration
-  5. Platform failures don't block posting to other platforms
+  1. Teasers post to Bluesky with link back to full content
+  2. Teasers post to Mastodon with link back to full content
+  3. User can enable/disable platforms via configuration
+  4. Platform failures don't block posting to other platforms
 **Plans**: TBD
 
 Plans:
@@ -132,7 +133,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation & Approval Loop | 7/7 | Ready for deployment | 2026-02-01 |
 | 2. Content Generation | 5/5 | Complete | 2026-02-02 |
-| 3. First Platform Integration | 0/TBD | Not started | - |
+| 3. First Platform Integration | 0/5 | Ready for execution | - |
 | 4. Multi-Platform Expansion | 0/TBD | Not started | - |
 | 5. Intelligence & Releases | 0/TBD | Not started | - |
 | 6. Extensibility | 0/TBD | Not started | - |
