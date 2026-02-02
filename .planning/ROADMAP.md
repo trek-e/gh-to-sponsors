@@ -51,11 +51,14 @@ Plans:
   2. System aggregates commits from configured repos into readable digest
   3. System generates short teasers suitable for social platforms (under 300 chars)
   4. Digest uses commit messages to create meaningful summaries
-**Plans**: TBD
+**Plans**: 5 plans in 4 waves
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md — Types, config extension, and dependency installation
+- [ ] 02-02-PLAN.md — Bot detection and commit classification (TDD)
+- [ ] 02-03-PLAN.md — GitHub commit fetching and multi-repo aggregation
+- [ ] 02-04-PLAN.md — AI content generation with Anthropic Claude
+- [ ] 02-05-PLAN.md — Integration into generate-digest action
 
 ### Phase 3: First Platform Integration
 **Goal**: Approved posts successfully publish to Patreon with OAuth authentication
@@ -128,7 +131,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Approval Loop | 7/7 | Ready for deployment | 2026-02-01 |
-| 2. Content Generation | 0/TBD | Not started | - |
+| 2. Content Generation | 0/5 | Planned | - |
 | 3. First Platform Integration | 0/TBD | Not started | - |
 | 4. Multi-Platform Expansion | 0/TBD | Not started | - |
 | 5. Intelligence & Releases | 0/TBD | Not started | - |
