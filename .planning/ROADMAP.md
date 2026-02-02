@@ -88,13 +88,14 @@ Plans:
   2. Teasers post to Mastodon with link back to full content
   3. User can enable/disable platforms via configuration
   4. Platform failures don't block posting to other platforms
-**Plans**: 4 plans in 3 waves
+**Plans**: 5 plans in 3 waves
 
 Plans:
-- [ ] 04-01-PLAN.md — Config schema extensions, type definitions, SDK installation (Wave 1)
-- [ ] 04-02-PLAN.md — BlueskyPlugin with RichText facets (Wave 2, TDD)
-- [ ] 04-03-PLAN.md — MastodonPlugin with visibility settings (Wave 2, TDD)
-- [ ] 04-04-PLAN.md — Wire platforms into setup and verify integration (Wave 3)
+- [x] 04-01-PLAN.md — Config schema extensions, type definitions, SDK installation (Wave 1)
+- [x] 04-02-PLAN.md — BlueskyPlugin with RichText facets (Wave 2, TDD)
+- [x] 04-03-PLAN.md — MastodonPlugin with visibility settings (Wave 2, TDD)
+- [x] 04-04-PLAN.md — Wire platforms into setup and verify integration (Wave 3)
+- [ ] 04-05-PLAN.md — Gap closure: Link composition for social posts (Wave 4)
 
 ### Phase 5: Intelligence & Releases
 **Goal**: System adapts posting cadence and detects GitHub Releases for announcements
@@ -135,6 +136,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation & Approval Loop | 7/7 | Ready for deployment | 2026-02-01 |
 | 2. Content Generation | 5/5 | Complete | 2026-02-02 |
 | 3. First Platform Integration | 5/5 | Complete | 2026-02-02 |
-| 4. Multi-Platform Expansion | 0/4 | Ready for execution | - |
+| 4. Multi-Platform Expansion | 4/5 | Gap closure needed | - |
 | 5. Intelligence & Releases | 0/TBD | Not started | - |
 | 6. Extensibility | 0/TBD | Not started | - |
