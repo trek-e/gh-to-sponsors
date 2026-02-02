@@ -32,12 +32,14 @@
   "license": "MIT",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.72.1",
+    "@atproto/api": "^0.18.20",
     "@aws-sdk/client-ses": "^3.980.0",
     "@octokit/rest": "^22.0.1",
     "@sendgrid/mail": "^8.1.6",
     "@tryghost/admin-api": "^1.14.4",
     "date-fns": "^4.1.0",
     "express": "^5.2.1",
+    "masto": "^7.10.1",
     "resend": "^4.0.1",
     "yaml": "^2.6.1",
     "zod": "^3.24.1"
