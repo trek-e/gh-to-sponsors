@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 2 of 6 (Content Generation)
-Plan: 3 of 5 complete
+Plan: 4 of 5 complete
 Status: In progress
-Last activity: 2026-02-02 - Completed 02-03-PLAN.md (GitHub commit fetching and aggregation)
+Last activity: 2026-02-02 - Completed 02-04-PLAN.md (LLM integration)
 
-Progress: [█████████░] 80% Phase 1 + 60% Phase 2
+Progress: [█████████░] 80% Phase 1 + 80% Phase 2
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 11
 - Average duration: 2.4 minutes
-- Total execution time: 0.40 hours
+- Total execution time: 0.43 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 - Foundation & Approval Loop | 7/7 | 18 min | 2.6 min |
-| 2 - Content Generation | 3/5 | 7 min | 2.3 min |
+| 2 - Content Generation | 4/5 | 10 min | 2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-07 (1 min), 02-01 (2 min), 02-02 (2 min), 02-03 (3 min)
+- Last 5 plans: 02-01 (2 min), 02-02 (2 min), 02-03 (3 min), 02-04 (3 min)
 - Trend: Consistent fast execution
 
 *Updated after each plan completion*
@@ -111,6 +111,14 @@ Recent decisions affecting current work:
 - Sort repos by activity (most active first) for digest prioritization
 - Continue on error for individual repos rather than fail entire aggregation
 
+**From 02-04:**
+- Claude Sonnet for balance of quality and cost
+- Temperature 0.4 for factual digests, 0.7 for creative teasers
+- Exponential backoff with jitter for 429 rate limits
+- JSON output for teasers (easier parsing and validation)
+- Zod schema validation for teaser structure
+- Warn-only validation for digests (don't fail on missing links)
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -119,6 +127,10 @@ Recent decisions affecting current work:
 - Run manual workflow test
 - Verify complete approval flow end-to-end
 - See: .planning/phases/01-foundation-approval-loop/01-07-SUMMARY.md
+
+**User Setup Required for Phase 2 Content Generation:**
+- Set ANTHROPIC_API_KEY environment variable
+- Source: Anthropic Console -> API Keys -> Create key
 
 ### Blockers/Concerns
 
@@ -135,7 +147,7 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-02-02 02:59 UTC
-Stopped at: Completed 02-03-PLAN.md (GitHub commit fetching and aggregation)
+Last session: 2026-02-02 03:04 UTC
+Stopped at: Completed 02-04-PLAN.md (LLM integration)
 Resume file: None
-Next action: Execute 02-04-PLAN.md (LLM integration)
+Next action: Execute 02-05-PLAN.md (orchestration)
