@@ -10,6 +10,7 @@ export {
   markTokenUsed,
   cleanExpiredTokens,
   createPost,
+  updatePlatformResults,
   DEFAULT_STATE_PATH,
   EMPTY_STATE
 } from './artifacts.js';

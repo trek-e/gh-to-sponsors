@@ -171,3 +171,39 @@ export function createPost(
     }
   };
 }
+
+/**
+ * Updates platform results for a post (immutable)
+ *
+ * Merges new platform results with existing ones, preserving any
+ * platforms not included in the update.
+ *
+ * @param state - Current state
+ * @param postId - Post ID to update
+ * @param platformResults - Platform results to merge
+ * @returns New state with updated platform results, or unchanged state if post not found
+ */
+export function updatePlatformResults(
+  state: DigestState,
+  postId: string,
+  platformResults: Record<string, PlatformPostState>
+): DigestState {
+  const post = state.posts[postId];
+  if (!post) {
+    return state;
+  }
+
+  return {
+    ...state,
+    posts: {
+      ...state.posts,
+      [postId]: {
+        ...post,
+        platforms: {
+          ...post.platforms,
+          ...platformResults
+        }
+      }
+    }
+  };
+}
