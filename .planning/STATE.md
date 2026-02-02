@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 2 of 6 (Content Generation)
-Plan: 1 of 5 complete
+Plan: 2 of 5 complete
 Status: In progress
-Last activity: 2026-02-02 - Completed 02-01-PLAN.md (content types and config)
+Last activity: 2026-02-02 - Completed 02-02-PLAN.md (bot detection and commit classification)
 
-Progress: [████████░░] 80% Phase 1 + 20% Phase 2
+Progress: [████████░░] 80% Phase 1 + 40% Phase 2
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 2.5 minutes
-- Total execution time: 0.33 hours
+- Total plans completed: 9
+- Average duration: 2.4 minutes
+- Total execution time: 0.36 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 - Foundation & Approval Loop | 7/7 | 18 min | 2.6 min |
-| 2 - Content Generation | 1/5 | 2 min | 2 min |
+| 2 - Content Generation | 2/5 | 4 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-05 (2.5 min), 01-06 (2 min), 01-07 (1 min), 02-01 (2 min)
+- Last 5 plans: 01-06 (2 min), 01-07 (1 min), 02-01 (2 min), 02-02 (2 min)
 - Trend: Consistent fast execution
 
 *Updated after each plan completion*
@@ -100,6 +100,11 @@ Recent decisions affecting current work:
 - Content thresholds: dailyThreshold=1, weeklyThreshold=3
 - Multi-repo pattern: repos array replaces single owner/repo
 
+**From 02-02:**
+- Bot detection via author patterns + noreply.github.com emails
+- Case-insensitive matching for bot names and commit types
+- filterAndClassifyCommits returns { human: ClassifiedCommit[], botCount: number }
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -124,7 +129,7 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-02-02 02:54 UTC
-Stopped at: Completed 02-01-PLAN.md (content types and config)
+Last session: 2026-02-02 02:57 UTC
+Stopped at: Completed 02-02-PLAN.md (bot detection and commit classification)
 Resume file: None
-Next action: Execute 02-02-PLAN.md (commit fetching)
+Next action: Execute 02-03-PLAN.md (commit fetching)
