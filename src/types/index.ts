@@ -11,7 +11,9 @@ export type {
   AutoAction,
   ApprovalConfig,
   ScheduleConfig,
+  RepoConfig,
   GitHubConfig,
+  ContentConfig,
   Config,
 } from './config.js';
 

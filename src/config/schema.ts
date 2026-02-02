@@ -35,10 +35,22 @@ const scheduleConfigSchema = z.object({
   timezone: z.string().optional(),
 });
 
-// GitHub configuration schema
-const githubConfigSchema = z.object({
+// Single repository schema
+export const repoSchema = z.object({
   owner: z.string().min(1, 'GitHub owner is required'),
   repo: z.string().min(1, 'GitHub repo is required'),
+  displayName: z.string().optional(),
+});
+
+// GitHub configuration schema with multi-repo support
+const githubConfigSchema = z.object({
+  repos: z.array(repoSchema).min(1, 'At least one repository is required'),
+});
+
+// Content generation configuration schema
+export const contentConfigSchema = z.object({
+  dailyThreshold: z.number().int().min(1).default(1),
+  weeklyThreshold: z.number().int().min(1).default(3),
 });
 
 // Main configuration schema
@@ -47,6 +59,7 @@ export const configSchema = z.object({
   approval: approvalConfigSchema,
   schedule: scheduleConfigSchema,
   github: githubConfigSchema,
+  content: contentConfigSchema.optional(),
 });
 
 /**
