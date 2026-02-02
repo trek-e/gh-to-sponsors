@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Creators approve one email and their supporters on every platform get updated
-**Current focus:** Phase 3 - First Platform Integration (Ghost CMS) - COMPLETE
+**Current focus:** Phase 4 - Multi-Platform Expansion (Bluesky + Mastodon)
 
 ## Current Position
 
-Phase: 3 of 6 (First Platform Integration) - COMPLETE
-Plan: 5 of 5 complete (03-01, 03-02, 03-03, 03-04, 03-05)
-Status: Phase complete
-Last activity: 2026-02-02 - Completed 03-05-PLAN.md (failure notifications)
+Phase: 4 of 6 (Multi-Platform Expansion)
+Plan: 1 of 3 complete (04-01)
+Status: In progress
+Last activity: 2026-02-02 - Completed 04-01-PLAN.md (platform configuration types)
 
-Progress: [████████████████░░░░] ~80% (Phase 1 + Phase 2 + Phase 3)
+Progress: [█████████████████░░░] ~83% (Phase 1-3 complete, Phase 4 started)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17
+- Total plans completed: 18
 - Average duration: 2.4 minutes
-- Total execution time: 0.68 hours
+- Total execution time: 0.71 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [████████████████░░░░] ~80% (P
 | 1 - Foundation & Approval Loop | 7/7 | 18 min | 2.6 min |
 | 2 - Content Generation | 5/5 | 12 min | 2.4 min |
 | 3 - First Platform Integration | 5/5 | 15 min | 3.0 min |
+| 4 - Multi-Platform Expansion | 1/3 | 2 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (4 min), 03-03 (4 min), 03-04 (1 min), 03-05 (4 min)
-- Trend: Consistent fast execution
+- Last 5 plans: 03-03 (4 min), 03-04 (1 min), 03-05 (4 min), 04-01 (2 min)
+- Trend: Maintaining fast execution velocity
 
 *Updated after each plan completion*
 
@@ -158,6 +159,12 @@ Recent decisions affecting current work:
 - Failure notification sent automatically when any platform fails
 - Environment variables: HMAC_SECRET, APPROVAL_URL, NOTIFICATION_EMAIL
 
+**From 04-01:**
+- Bluesky app password auth over OAuth (simpler v1 implementation)
+- Mastodon access token pattern (standard API approach)
+- Platform configs optional in PlatformsConfig (backward compatibility)
+- Official SDKs: @atproto/api for Bluesky, masto for Mastodon
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -175,6 +182,16 @@ Recent decisions affecting current work:
 - Set GHOST_API_URL and GHOST_ADMIN_API_KEY environment variables
 - Optional: GHOST_DEFAULT_STATUS, GHOST_DEFAULT_TAGS
 - Source: Ghost Admin -> Settings -> Integrations -> Add custom integration
+
+**User Setup Required for Phase 4 Bluesky Integration:**
+- Set BLUESKY_IDENTIFIER (e.g., "user.bsky.social")
+- Set BLUESKY_APP_PASSWORD (from Bluesky Settings -> App Passwords)
+- Optional: Configure defaultLang in config.yml
+
+**User Setup Required for Phase 4 Mastodon Integration:**
+- Set MASTODON_ACCESS_TOKEN (from Mastodon app creation)
+- Configure instanceUrl in config.yml (e.g., "https://mastodon.social")
+- Optional: Configure visibility (public/unlisted/private)
 
 ### Blockers/Concerns
 
@@ -202,9 +219,14 @@ Recent decisions affecting current work:
 - Failure notification emails with per-platform retry links
 - Ready for multi-platform expansion (Phase 4)
 
+**Phase 4 Started:**
+- Configuration types and Zod schemas for Bluesky and Mastodon
+- Official SDKs installed (@atproto/api, masto)
+- Ready for plugin implementation in 04-02 and 04-03
+
 ## Session Continuity
 
-Last session: 2026-02-02 14:35 UTC
-Stopped at: Completed 03-05-PLAN.md (failure notifications)
+Last session: 2026-02-02 22:36 UTC
+Stopped at: Completed 04-01-PLAN.md (platform configuration types)
 Resume file: None
-Next action: Begin Phase 4 (Multi-Platform Expansion)
+Next action: Continue Phase 4 with 04-02 (Bluesky plugin) or 04-03 (Mastodon plugin)
