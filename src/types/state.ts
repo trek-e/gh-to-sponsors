@@ -18,6 +18,18 @@ export interface PlatformPostState {
   attemptedAt?: string;
 }
 
+/** Release announcement content for PostState */
+export interface ReleaseAnnouncement {
+  type: 'release';
+  tagName: string;
+  title: string;
+  body: string;
+  releaseUrl: string;
+  downloadLinks: Array<{ name: string; url: string }>;
+  isPrerelease: boolean;
+  repoName: string;
+}
+
 export interface PostState {
   id: string;
   contentHash: string;
@@ -39,10 +51,19 @@ export interface PostState {
     hashtags: string[];
     characterCount: number;
   };
+  // Release announcement (added in Phase 5)
+  release?: ReleaseAnnouncement;
 }
 
 export interface DigestState {
   posts: Record<string, PostState>;
   usedTokens: string[];
   lastRun: string;
+  // Cadence tracking fields (added in Phase 5)
+  /** ISO date string of last meaningful activity */
+  lastActivityDate?: string;
+  /** Days without meaningful commits */
+  consecutiveQuietDays?: number;
+  /** Current active cadence mode */
+  cadenceMode?: 'daily' | 'weekly' | 'auto';
 }
