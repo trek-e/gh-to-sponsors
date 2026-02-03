@@ -84,6 +84,21 @@ export const platformsConfigSchema = z.object({
   mastodon: mastodonConfigSchema.optional(),
 });
 
+// Cadence configuration schema
+export const cadenceConfigSchema = z.object({
+  mode: z.enum(['daily', 'weekly', 'auto']).default('auto'),
+  weeklyDay: z.number().int().min(0).max(6).default(1),
+  quietPeriodDays: z.number().int().min(1).default(3),
+  activityThreshold: z.number().int().min(1).default(1),
+});
+
+// Release configuration schema
+export const releaseConfigSchema = z.object({
+  enabled: z.boolean().default(true),
+  includePrereleases: z.boolean().default(false),
+  includeDrafts: z.boolean().default(false),
+});
+
 // Main configuration schema
 export const configSchema = z.object({
   email: emailConfigSchema,
@@ -92,6 +107,8 @@ export const configSchema = z.object({
   github: githubConfigSchema,
   content: contentConfigSchema.optional(),
   platforms: platformsConfigSchema.optional(),
+  cadence: cadenceConfigSchema.optional(),
+  releases: releaseConfigSchema.optional(),
 });
 
 /**
