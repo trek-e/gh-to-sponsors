@@ -38,8 +38,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Social Platforms
 
-- [ ] **SOCL-01**: System posts teasers to Bluesky on approval
-- [ ] **SOCL-02**: System posts teasers to Mastodon on approval
+- [x] **SOCL-01**: System posts teasers to Bluesky on approval
+- [x] **SOCL-02**: System posts teasers to Mastodon on approval
 
 ### Extensibility
 
@@ -108,8 +108,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-03 | Phase 2 | Complete |
 | SUPP-01 | Phase 3 | Complete |
 | EXTN-01 | Phase 3 | Complete |
-| SOCL-01 | Phase 4 | Pending |
-| SOCL-02 | Phase 4 | Pending |
+| SOCL-01 | Phase 4 | Complete |
+| SOCL-02 | Phase 4 | Complete |
 | GHUB-03 | Phase 5 | Pending |
 | SCHD-02 | Phase 5 | Pending |
 | SCHD-03 | Phase 5 | Pending |
@@ -122,4 +122,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2025-02-01*
-*Last updated: 2026-02-02 — Phase 3 complete (Ghost + plugin architecture)*
+*Last updated: 2026-02-02 — Phase 4 complete (Bluesky + Mastodon with link composition)*

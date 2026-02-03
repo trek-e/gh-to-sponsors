@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation & Approval Loop** - Infrastructure, scheduling, and secure email-based approval workflow
 - [x] **Phase 2: Content Generation** - GitHub activity monitoring and digest creation
 - [x] **Phase 3: First Platform Integration** - Ghost posting and plugin architecture validation
-- [ ] **Phase 4: Multi-Platform Expansion** - Bluesky and Mastodon integrations
+- [x] **Phase 4: Multi-Platform Expansion** - Bluesky and Mastodon integrations
 - [ ] **Phase 5: Intelligence & Releases** - GitHub Releases detection and adaptive scheduling
 - [ ] **Phase 6: Extensibility** - Plugin system documentation and community enablement
 
@@ -95,7 +95,7 @@ Plans:
 - [x] 04-02-PLAN.md — BlueskyPlugin with RichText facets (Wave 2, TDD)
 - [x] 04-03-PLAN.md — MastodonPlugin with visibility settings (Wave 2, TDD)
 - [x] 04-04-PLAN.md — Wire platforms into setup and verify integration (Wave 3)
-- [ ] 04-05-PLAN.md — Gap closure: Link composition for social posts (Wave 4)
+- [x] 04-05-PLAN.md — Gap closure: Link composition for social posts (Wave 4)
 
 ### Phase 5: Intelligence & Releases
 **Goal**: System adapts posting cadence and detects GitHub Releases for announcements
@@ -136,6 +136,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation & Approval Loop | 7/7 | Ready for deployment | 2026-02-01 |
 | 2. Content Generation | 5/5 | Complete | 2026-02-02 |
 | 3. First Platform Integration | 5/5 | Complete | 2026-02-02 |
-| 4. Multi-Platform Expansion | 4/5 | Gap closure needed | - |
+| 4. Multi-Platform Expansion | 5/5 | Complete | 2026-02-02 |
 | 5. Intelligence & Releases | 0/TBD | Not started | - |
 | 6. Extensibility | 0/TBD | Not started | - |
