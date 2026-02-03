@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import type { PostState, PlatformPostState } from '../types/state.js';
+import type { PostState } from '../types/state.js';
 import {
   composeSocialPostContent,
   getLinkTarget,

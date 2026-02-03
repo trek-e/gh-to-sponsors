@@ -37,22 +37,95 @@ export interface ExecutionSummary {
 }
 
 /**
- * Posts content to all configured platforms in parallel.
+ * Posts content to all configured platforms.
+ *
+ * Strategy:
+ * 1. Post to Ghost first (to get URL for social posts)
+ * 2. Update state with Ghost result
+ * 3. Compose teaser + link for social platforms
+ * 4. Post to social platforms in parallel with composed content
  *
  * Uses Promise.allSettled for error isolation - one platform's failure
  * doesn't prevent posting to others.
  *
  * @param plugins - Array of configured platform plugins
  * @param state - Post state containing content to publish
+ * @param githubFallback - Optional GitHub URL for fallback when Ghost unavailable
  * @returns Summary with per-platform results
  */
 export async function postToAllPlatforms(
   plugins: PlatformPlugin[],
-  state: PostState
+  state: PostState,
+  githubFallback?: string
 ): Promise<ExecutionSummary> {
-  const promises = plugins.map(async (plugin): Promise<PlatformPostResult> => {
+  // Separate Ghost from social platforms
+  const ghostPlugin = plugins.find((p) => p.name === 'ghost');
+  const socialPlugins = plugins.filter((p) => p.name !== 'ghost');
+
+  const results: PlatformPostResult[] = [];
+
+  // Step 1: Post to Ghost first (if configured)
+  if (ghostPlugin) {
     try {
-      const result = await plugin.post(state);
+      const ghostResult = await ghostPlugin.post(state);
+      results.push({
+        platform: ghostPlugin.name,
+        success: ghostResult.success,
+        postId: ghostResult.platformPostId,
+        postUrl: ghostResult.platformUrl,
+        error: ghostResult.error,
+      });
+
+      // Step 2: Update state with Ghost result
+      if (ghostResult.success && ghostResult.platformUrl) {
+        state.platforms.ghost = {
+          status: 'success',
+          postId: ghostResult.platformPostId,
+          postUrl: ghostResult.platformUrl,
+          attemptedAt: new Date().toISOString(),
+        };
+      } else {
+        state.platforms.ghost = {
+          status: 'failed',
+          error: ghostResult.error,
+          attemptedAt: new Date().toISOString(),
+        };
+      }
+    } catch (error) {
+      // Catch any unexpected throws from Ghost plugin
+      results.push({
+        platform: ghostPlugin.name,
+        success: false,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      state.platforms.ghost = {
+        status: 'failed',
+        error: error instanceof Error ? error.message : String(error),
+        attemptedAt: new Date().toISOString(),
+      };
+    }
+  }
+
+  // Step 3: Compose teaser + link for social platforms
+  const linkTarget = getLinkTarget();
+  const composedTeaserText = composeSocialPostContent(state, linkTarget, githubFallback);
+
+  // Create modified state for social platforms with composed content
+  const socialState: PostState = {
+    ...state,
+    teaser: state.teaser
+      ? {
+          ...state.teaser,
+          text: composedTeaserText,
+          characterCount: composedTeaserText.length,
+        }
+      : undefined,
+  };
+
+  // Step 4: Post to social platforms in parallel
+  const socialPromises = socialPlugins.map(async (plugin): Promise<PlatformPostResult> => {
+    try {
+      const result = await plugin.post(socialState);
       return {
         platform: plugin.name,
         success: result.success,
@@ -72,20 +145,22 @@ export async function postToAllPlatforms(
   });
 
   // Promise.allSettled ensures all platform posts complete regardless of failures
-  const settled = await Promise.allSettled(promises);
+  const socialSettled = await Promise.allSettled(socialPromises);
 
-  const results = settled.map((outcome, index) => {
+  const socialResults = socialSettled.map((outcome, index) => {
     if (outcome.status === 'fulfilled') {
       return outcome.value;
     }
     // This shouldn't happen since we wrap everything in try/catch,
     // but handle it for robustness
     return {
-      platform: plugins[index]?.name || 'unknown',
+      platform: socialPlugins[index]?.name || 'unknown',
       success: false,
       error: String(outcome.reason),
     };
   });
+
+  results.push(...socialResults);
 
   const successfulPlatforms = results.filter((r) => r.success).map((r) => r.platform);
   const failedPlatforms = results.filter((r) => !r.success).map((r) => r.platform);
