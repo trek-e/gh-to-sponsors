@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Creators approve one email and their supporters on every platform get updated
-**Current focus:** Phase 4 - Multi-Platform Expansion (Bluesky + Mastodon)
+**Current focus:** Phase 5 - Intelligence and Releases
 
 ## Current Position
 
-Phase: 4 of 6 (Multi-Platform Expansion)
-Plan: 5 of 5 complete (04-05)
-Status: Phase complete (with gap closure)
-Last activity: 2026-02-03 - Completed 04-05-PLAN.md (Link composition for social posts)
+Phase: 5 of 6 (Intelligence and Releases)
+Plan: 1 of 7 complete (05-01)
+Status: In progress
+Last activity: 2026-02-02 - Completed 05-01-PLAN.md (Cadence and release config types)
 
-Progress: [██████████████████░░] ~92% (Phase 1-4 complete with gap closure, Phase 5-6 remaining)
+Progress: [██████████████████░░] ~93% (Phase 1-4 complete, Phase 5 in progress)
 
 ## Performance Metrics
 
@@ -31,10 +31,11 @@ Progress: [██████████████████░░] ~92% (P
 | 2 - Content Generation | 5/5 | 12 min | 2.4 min |
 | 3 - First Platform Integration | 5/5 | 15 min | 3.0 min |
 | 4 - Multi-Platform Expansion | 5/5 | 21 min | 4.2 min |
+| 5 - Intelligence & Releases | 1/7 | 3 min | 3.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-02 (7 min), 04-03 (3 min), 04-04 (3 min), 04-05 (5 min)
-- Trend: Integration plans fast (3 min), TDD plans slower (5-7 min) but thorough
+- Last 5 plans: 04-03 (3 min), 04-04 (3 min), 04-05 (5 min), 05-01 (3 min)
+- Trend: Type/config plans fast (3 min), TDD plans slower (5-7 min) but thorough
 
 *Updated after each plan completion*
 
@@ -193,6 +194,13 @@ Recent decisions affecting current work:
 - Social platforms receive modified state with teaser + link
 - Graceful fallback to GitHub URL when Ghost fails (if provided)
 
+**From 05-01:**
+- All new state/config fields optional for backward compatibility
+- Cadence mode defaults to 'auto' (intelligent scheduling)
+- Weekly digest day defaults to Monday (weeklyDay=1)
+- Quiet period threshold 3 days before switching to weekly
+- Pre-releases and drafts excluded from announcements by default
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -257,9 +265,13 @@ Recent decisions affecting current work:
 - 162 tests passing (no regressions)
 - Gap closure: Social posts now include links back to full content
 
+**Phase 5 In Progress (Intelligence & Releases):**
+- 05-01: Cadence and release config types complete (state and config extended)
+- Foundation types ready for cadence decision logic and release handling
+
 ## Session Continuity
 
-Last session: 2026-02-03 00:25 UTC
-Stopped at: Completed 04-05-PLAN.md (Link composition - Phase 4 complete with gap closure)
+Last session: 2026-02-02 20:37 UTC
+Stopped at: Completed 05-01-PLAN.md (Cadence and release config types)
 Resume file: None
-Next action: Phase 4 complete including gap closure. Ready for Phase 5 or Phase 6.
+Next action: Continue Phase 5 with 05-02-PLAN.md (Cadence decision logic)
