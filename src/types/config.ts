@@ -46,6 +46,28 @@ export interface ContentConfig {
   weeklyThreshold: number;
 }
 
+/** Cadence configuration for digest scheduling */
+export interface CadenceConfig {
+  /** User's preferred cadence mode (default: 'auto') */
+  mode: 'daily' | 'weekly' | 'auto';
+  /** Day of week for weekly digests (0=Sunday, default: 1=Monday) */
+  weeklyDay?: number;
+  /** Days of no activity before considered "quiet period" (default: 3) */
+  quietPeriodDays?: number;
+  /** Minimum commits to consider "meaningful activity" (default: 1) */
+  activityThreshold?: number;
+}
+
+/** Release announcement configuration */
+export interface ReleaseConfig {
+  /** Enable release announcements (default: true) */
+  enabled: boolean;
+  /** Include pre-releases in announcements (default: false) */
+  includePrereleases?: boolean;
+  /** Include draft releases (default: false) */
+  includeDrafts?: boolean;
+}
+
 export interface Config {
   email: EmailConfig;
   approval: ApprovalConfig;
@@ -55,4 +77,8 @@ export interface Config {
   content?: ContentConfig;
   /** Platform publishing settings (optional) */
   platforms?: PlatformsConfig;
+  /** Cadence settings for digest scheduling (optional, has defaults) */
+  cadence?: CadenceConfig;
+  /** Release announcement settings (optional, has defaults) */
+  releases?: ReleaseConfig;
 }
