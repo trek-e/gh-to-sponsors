@@ -1,0 +1,76 @@
+# GitHub Actions Workflow: Release Announcement Handler
+#
+# Triggered when a GitHub Release is published. Generates an announcement
+# and sends approval email. Pre-release filtering is configurable.
+#
+# IMPORTANT: This workflow runs on the 'release' event, which only fires
+# for releases created through the GitHub UI or API (not GITHUB_TOKEN).
+
+name: Handle Release
+
+on:
+  release:
+    types: [published]
+
+# Prevent concurrent runs that could corrupt state
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  announce-release:
+    runs-on: ubuntu-latest
+    # Skip pre-releases unless configured (INCLUDE_PRERELEASES=true)
+    # Skip draft releases unless configured (INCLUDE_DRAFTS=true)
+    if: |
+      (!github.event.release.prerelease || vars.INCLUDE_PRERELEASES == 'true') &&
+      (!github.event.release.draft || vars.INCLUDE_DRAFTS == 'true')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download current state
+        uses: actions/download-artifact@v6
+        with:
+          name: digest-state
+          path: .state
+        continue-on-error: true
+
+      - name: Process release announcement
+        env:
+          # Release details from github.event context
+          RELEASE_ID: ${{ github.event.release.id }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_BODY: ${{ github.event.release.body }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
+          RELEASE_PRERELEASE: ${{ github.event.release.prerelease }}
+          RELEASE_DRAFT: ${{ github.event.release.draft }}
+          RELEASE_ASSETS: ${{ toJSON(github.event.release.assets) }}
+          # Repository context
+          REPO_FULL_NAME: ${{ github.repository }}
+          # Existing secrets
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EMAIL_API_KEY: ${{ secrets.EMAIL_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          APPROVAL_SECRET: ${{ secrets.APPROVAL_SECRET }}
+          APPROVAL_ENDPOINT_URL: ${{ secrets.APPROVAL_ENDPOINT_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: npm run handle-release
+
+      - name: Upload updated state
+        uses: actions/upload-artifact@v6
+        with:
+          name: digest-state
+          path: .state/digest.json
+          retention-days: 90
