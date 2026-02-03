@@ -54,10 +54,12 @@ jobs:
 
       - name: Generate digest and send email
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EMAIL_API_KEY: ${{ secrets.EMAIL_API_KEY }}
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           APPROVAL_SECRET: ${{ secrets.APPROVAL_SECRET }}
           APPROVAL_ENDPOINT_URL: ${{ secrets.APPROVAL_ENDPOINT_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           FORCE_DIGEST: ${{ github.event.inputs.force || 'false' }}
         run: npm run generate-digest
 
