@@ -14,6 +14,8 @@ export interface ApprovalEmailData {
   hashtags?: string[];
   repos?: string[];
   periodType?: 'daily' | 'weekly' | 'release';
+  // Phase 5 release announcement fields
+  releaseTag?: string;
 }
 
 export interface EmailTemplate {
@@ -23,10 +25,31 @@ export interface EmailTemplate {
 }
 
 /**
+ * Generates subject line based on period type
+ */
+function getSubjectLine(data: ApprovalEmailData): string {
+  const { periodType, repos, releaseTag, itemCount } = data;
+
+  if (periodType === 'release' && releaseTag) {
+    const repoName = repos && repos.length > 0 ? repos[0] : 'your project';
+    return `New Release: ${releaseTag} - ${repoName}`;
+  }
+
+  if (periodType === 'daily' || periodType === 'weekly') {
+    const period = periodType === 'daily' ? 'Daily' : 'Weekly';
+    const repoList = repos && repos.length > 0 ? repos.join(', ') : 'your repos';
+    return `${period} Update: ${repoList}`;
+  }
+
+  // Fallback for backward compatibility
+  return `Digest ready: ${itemCount} item${itemCount === 1 ? '' : 's'} to review`;
+}
+
+/**
  * Renders the approval email with both HTML and plain text versions
  */
 export function renderApprovalEmail(data: ApprovalEmailData): EmailTemplate {
-  const subject = `Digest ready: ${data.itemCount} item${data.itemCount === 1 ? '' : 's'} to review`;
+  const subject = getSubjectLine(data);
 
   const html = renderHTMLEmail(data);
   const text = renderPlainTextEmail(data);
@@ -35,6 +58,24 @@ export function renderApprovalEmail(data: ApprovalEmailData): EmailTemplate {
 }
 
 function renderHTMLEmail(data: ApprovalEmailData): string {
+  const isRelease = data.periodType === 'release';
+
+  // Release-specific styling
+  const headerBgColor = isRelease ? '#1a7f37' : '#ffffff';
+  const headerTextColor = isRelease ? '#ffffff' : '#24292f';
+  const headerSubtextColor = isRelease ? '#d4f8db' : '#6e7781';
+
+  // Build header content based on type
+  const headerTitle = isRelease
+    ? `New Release: ${escapeHtml(data.releaseTag || 'Latest')}`
+    : `Your ${data.periodType || ''} digest is ready`;
+
+  const headerSubtitle = isRelease && data.repos && data.repos.length > 0
+    ? `Release announcement for ${data.repos[0]}`
+    : data.repos && data.repos.length > 0
+      ? `${data.itemCount} commit${data.itemCount === 1 ? '' : 's'} from ${data.repos.join(', ')}`
+      : '';
+
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -49,16 +90,21 @@ function renderHTMLEmail(data: ApprovalEmailData): string {
 
           <!-- Header -->
           <tr>
-            <td style="padding: 32px 32px 24px;">
-              <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 600; color: #24292f; line-height: 1.25;">
-                Your ${data.periodType || ''} digest is ready
+            <td style="padding: 32px 32px 24px; background-color: ${headerBgColor};">
+              ${isRelease ? `
+              <div style="display: inline-block; background-color: #ffffff; color: #1a7f37; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 12px; margin-bottom: 12px;">
+                RELEASE ANNOUNCEMENT
+              </div>
+              ` : ''}
+              <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 600; color: ${headerTextColor}; line-height: 1.25;">
+                ${headerTitle}
               </h1>
-              ${data.repos && data.repos.length > 0 ? `
-              <p style="margin: 0 0 12px; font-size: 14px; color: #6e7781;">
-                ${data.itemCount} commit${data.itemCount === 1 ? '' : 's'} from ${data.repos.join(', ')}
+              ${headerSubtitle ? `
+              <p style="margin: 0 0 12px; font-size: 14px; color: ${headerSubtextColor};">
+                ${headerSubtitle}
               </p>
               ` : ''}
-              <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #57606a; white-space: pre-wrap;">
+              <p style="margin: 0; font-size: 16px; line-height: 1.6; color: ${isRelease ? '#d4f8db' : '#57606a'}; white-space: pre-wrap;">
                 ${escapeHtml(data.summary)}
               </p>
             </td>
@@ -157,13 +203,26 @@ function renderHTMLEmail(data: ApprovalEmailData): string {
 }
 
 function renderPlainTextEmail(data: ApprovalEmailData): string {
-  const periodLabel = data.periodType ? `${data.periodType.toUpperCase()} ` : '';
-  const repoInfo = data.repos && data.repos.length > 0
-    ? `\n${data.itemCount} commit${data.itemCount === 1 ? '' : 's'} from ${data.repos.join(', ')}\n`
-    : '';
+  const isRelease = data.periodType === 'release';
+
+  let headerTitle: string;
+  let repoInfo: string;
+
+  if (isRelease) {
+    headerTitle = `NEW RELEASE: ${data.releaseTag || 'LATEST'}`;
+    repoInfo = data.repos && data.repos.length > 0
+      ? `\nRelease announcement for ${data.repos[0]}\n`
+      : '';
+  } else {
+    const periodLabel = data.periodType ? `${data.periodType.toUpperCase()} ` : '';
+    headerTitle = `YOUR ${periodLabel}DIGEST IS READY`;
+    repoInfo = data.repos && data.repos.length > 0
+      ? `\n${data.itemCount} commit${data.itemCount === 1 ? '' : 's'} from ${data.repos.join(', ')}\n`
+      : '';
+  }
 
   const lines = [
-    `YOUR ${periodLabel}DIGEST IS READY`,
+    headerTitle,
     '='.repeat(50),
     repoInfo,
     data.summary,
