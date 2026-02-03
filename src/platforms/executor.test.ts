@@ -143,3 +143,150 @@ describe('getLinkTarget', () => {
     expect(result).toBe('https://my-site.com');
   });
 });
+
+describe('postToAllPlatforms integration', () => {
+  let state: PostState;
+
+  beforeEach(() => {
+    delete process.env.SOCIAL_LINK_TARGET;
+    state = {
+      id: 'test-post',
+      contentHash: 'hash123',
+      status: 'approved',
+      platforms: {},
+      createdAt: '2026-02-01T00:00:00Z',
+      digest: {
+        title: 'Daily Digest',
+        content: '<p>Full digest content here</p>',
+        repos: ['owner/repo'],
+        commitCount: 5,
+        periodType: 'daily',
+        generatedAt: '2026-02-01T00:00:00Z',
+      },
+      teaser: {
+        text: 'Check out this awesome update!',
+        hashtags: ['devlog', 'opensource'],
+        characterCount: 31,
+      },
+    };
+  });
+
+  it('posts Ghost first, then social platforms receive Ghost URL in teaser', async () => {
+    const { postToAllPlatforms } = await import('./executor.js');
+
+    // Mock Ghost plugin
+    const ghostPlugin = {
+      name: 'ghost',
+      isConfigured: () => true,
+      post: async () => ({
+        success: true,
+        platformPostId: 'ghost-123',
+        platformUrl: 'https://blog.example.com/daily-digest',
+      }),
+    };
+
+    // Mock Bluesky plugin - capture what it receives
+    let blueskyReceivedState: PostState | undefined;
+    const blueskyPlugin = {
+      name: 'bluesky',
+      isConfigured: () => true,
+      post: async (postState: PostState) => {
+        blueskyReceivedState = postState;
+        return {
+          success: true,
+          platformPostId: 'bluesky-123',
+          platformUrl: 'https://bsky.app/post/123',
+        };
+      },
+    };
+
+    const summary = await postToAllPlatforms([ghostPlugin, blueskyPlugin], state);
+
+    expect(summary.allSucceeded).toBe(true);
+    expect(summary.results).toHaveLength(2);
+    expect(summary.results[0].platform).toBe('ghost');
+    expect(summary.results[1].platform).toBe('bluesky');
+
+    // Verify Bluesky received teaser with Ghost URL appended
+    expect(blueskyReceivedState?.teaser?.text).toBe(
+      'Check out this awesome update!\n\nhttps://blog.example.com/daily-digest'
+    );
+  });
+
+  it('social platforms get teaser only when Ghost fails and no fallback', async () => {
+    const { postToAllPlatforms } = await import('./executor.js');
+
+    // Mock failing Ghost plugin
+    const ghostPlugin = {
+      name: 'ghost',
+      isConfigured: () => true,
+      post: async () => ({
+        success: false,
+        error: 'Ghost API error',
+      }),
+    };
+
+    // Mock Mastodon plugin - capture what it receives
+    let mastodonReceivedState: PostState | undefined;
+    const mastodonPlugin = {
+      name: 'mastodon',
+      isConfigured: () => true,
+      post: async (postState: PostState) => {
+        mastodonReceivedState = postState;
+        return {
+          success: true,
+          platformPostId: 'mastodon-123',
+          platformUrl: 'https://mastodon.social/@user/123',
+        };
+      },
+    };
+
+    const summary = await postToAllPlatforms([ghostPlugin, mastodonPlugin], state);
+
+    expect(summary.anySucceeded).toBe(true);
+    expect(summary.failedPlatforms).toContain('ghost');
+    expect(summary.successfulPlatforms).toContain('mastodon');
+
+    // Verify Mastodon received teaser without link (Ghost failed, no fallback)
+    expect(mastodonReceivedState?.teaser?.text).toBe('Check out this awesome update!');
+  });
+
+  it('GitHub fallback works when Ghost fails', async () => {
+    const { postToAllPlatforms } = await import('./executor.js');
+
+    // Mock failing Ghost plugin
+    const ghostPlugin = {
+      name: 'ghost',
+      isConfigured: () => true,
+      post: async () => ({
+        success: false,
+        error: 'Ghost API error',
+      }),
+    };
+
+    // Mock Bluesky plugin - capture what it receives
+    let blueskyReceivedState: PostState | undefined;
+    const blueskyPlugin = {
+      name: 'bluesky',
+      isConfigured: () => true,
+      post: async (postState: PostState) => {
+        blueskyReceivedState = postState;
+        return {
+          success: true,
+          platformPostId: 'bluesky-123',
+          platformUrl: 'https://bsky.app/post/123',
+        };
+      },
+    };
+
+    const githubFallback = 'https://github.com/user/repo';
+    const summary = await postToAllPlatforms([ghostPlugin, blueskyPlugin], state, githubFallback);
+
+    expect(summary.anySucceeded).toBe(true);
+
+    // Verify Bluesky received teaser with GitHub fallback URL
+    expect(blueskyReceivedState?.teaser?.text).toBe(
+      'Check out this awesome update!\n\nhttps://github.com/user/repo'
+    );
+  });
+});
