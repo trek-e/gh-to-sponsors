@@ -123,3 +123,67 @@ export function resultsToStateFormat(
 
   return platformStates;
 }
+
+/**
+ * Gets the configured link target for social posts.
+ * Reads from SOCIAL_LINK_TARGET environment variable.
+ *
+ * @returns Link target ('ghost', 'github', or custom URL)
+ */
+export function getLinkTarget(): string {
+  return process.env.SOCIAL_LINK_TARGET || 'ghost';
+}
+
+/**
+ * Composes social post content by appending link to teaser.
+ *
+ * Link target behavior:
+ * - 'ghost': Uses Ghost URL from state if available, otherwise teaser only
+ * - 'github': Uses provided GitHub fallback URL
+ * - Custom URL: Uses the provided custom URL
+ *
+ * Fallback: If Ghost target fails and GitHub fallback provided, uses GitHub URL
+ *
+ * @param state - Post state containing teaser and platform results
+ * @param target - Link target ('ghost', 'github', or custom URL)
+ * @param githubFallback - Optional GitHub URL to use as fallback
+ * @returns Composed content with teaser and link
+ */
+export function composeSocialPostContent(
+  state: PostState,
+  target: string,
+  githubFallback?: string
+): string {
+  // Handle missing teaser gracefully
+  if (!state.teaser?.text) {
+    return '';
+  }
+
+  const teaserText = state.teaser.text;
+
+  // Determine which URL to append
+  let linkUrl: string | undefined;
+
+  if (target === 'ghost') {
+    // Try to get Ghost URL from state
+    const ghostState = state.platforms.ghost;
+    if (ghostState?.status === 'success' && ghostState.postUrl) {
+      linkUrl = ghostState.postUrl;
+    } else if (githubFallback) {
+      // Fallback to GitHub if Ghost failed and fallback provided
+      linkUrl = githubFallback;
+    }
+  } else if (target === 'github') {
+    linkUrl = githubFallback;
+  } else {
+    // Custom URL
+    linkUrl = target;
+  }
+
+  // Compose final content
+  if (linkUrl) {
+    return `${teaserText}\n\n${linkUrl}`;
+  }
+
+  return teaserText;
+}
