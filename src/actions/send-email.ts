@@ -20,6 +20,14 @@ export async function sendApprovalEmail(
   data: ApprovalEmailData
 ): Promise<void> {
   try {
+    // Log email type being sent
+    const emailType = data.periodType === 'release'
+      ? 'release announcement'
+      : data.periodType
+        ? `${data.periodType} digest`
+        : 'digest';
+    console.log(`Sending ${emailType} approval email...`);
+
     // Create email provider from config
     const emailProvider = createEmailProvider(config.email);
 
