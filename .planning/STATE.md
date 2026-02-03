@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 5 of 6 (Intelligence and Releases)
-Plan: 5 of 7 complete (05-05)
+Plan: 6 of 7 complete (05-06)
 Status: In progress
-Last activity: 2026-02-03 - Completed 05-05-PLAN.md (Release event handling)
+Last activity: 2026-02-03 - Completed 05-06-PLAN.md (Release email templates)
 
-Progress: [████████████████████░] ~97% (Phase 1-4 complete, Phase 5: 5/7 plans)
+Progress: [████████████████████░] ~98% (Phase 1-4 complete, Phase 5: 6/7 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 27
+- Total plans completed: 28
 - Average duration: 2.5 minutes
-- Total execution time: 1.23 hours
+- Total execution time: 1.27 hours
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [████████████████████░] ~97%
 | 2 - Content Generation | 5/5 | 12 min | 2.4 min |
 | 3 - First Platform Integration | 5/5 | 15 min | 3.0 min |
 | 4 - Multi-Platform Expansion | 5/5 | 21 min | 4.2 min |
-| 5 - Intelligence & Releases | 5/7 | 20 min | 4.0 min |
+| 5 - Intelligence & Releases | 6/7 | 23 min | 3.8 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-02 (3 min), 05-03 (6 min), 05-04 (4 min), 05-05 (4 min)
+- Last 5 plans: 05-03 (6 min), 05-04 (4 min), 05-05 (4 min), 05-06 (3 min)
 - Trend: Type/config plans fast (3 min), TDD plans slower (5-7 min) but thorough
 
 *Updated after each plan completion*
@@ -225,6 +225,13 @@ Recent decisions affecting current work:
 - Repository variables for pre-release/draft filtering (INCLUDE_PRERELEASES, INCLUDE_DRAFTS)
 - Release announcement stores both release data and digest/teaser for platform posting
 
+**From 05-06:**
+- Release emails have green (#1a7f37) header with RELEASE ANNOUNCEMENT badge
+- Subject format: "New Release: v1.2.0 - repo-name" for releases
+- Subject format: "Daily/Weekly Update: repo-list" for digests
+- getSubjectLine() function for period-aware subject generation
+- releaseTag field added to ApprovalEmailData for explicit tag passing
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -295,11 +302,12 @@ Recent decisions affecting current work:
 - 05-03: Release content generation complete (TDD, 10 tests, AI-powered announcements)
 - 05-04: Cadence integration complete (generate-digest now cadence-aware)
 - 05-05: Release event handling complete (workflow + action for release announcements)
+- 05-06: Release email templates complete (distinct styling for releases vs digests)
 - 195 tests passing
 
 ## Session Continuity
 
-Last session: 2026-02-03 01:53 UTC
-Stopped at: Completed 05-05-PLAN.md (Release event handling)
+Last session: 2026-02-03 01:59 UTC
+Stopped at: Completed 05-06-PLAN.md (Release email templates)
 Resume file: None
-Next action: Continue Phase 5 with 05-06-PLAN.md or 05-07-PLAN.md
+Next action: Continue Phase 5 with 05-07-PLAN.md (final plan)
