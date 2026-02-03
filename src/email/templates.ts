@@ -13,7 +13,7 @@ export interface ApprovalEmailData {
   teaser?: string;
   hashtags?: string[];
   repos?: string[];
-  periodType?: 'daily' | 'weekly';
+  periodType?: 'daily' | 'weekly' | 'release';
 }
 
 export interface EmailTemplate {
