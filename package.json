@@ -19,7 +19,8 @@
     "docker:down": "docker compose down",
     "docker:dev": "docker compose --profile dev up approval-server-dev",
     "generate-digest": "node --import tsx src/actions/generate-digest.ts",
-    "process-approval": "node --import tsx src/actions/process-approval.ts"
+    "process-approval": "node --import tsx src/actions/process-approval.ts",
+    "handle-release": "node --import tsx src/actions/handle-release.ts"
   },
   "keywords": [
     "github",
