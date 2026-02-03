@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 4 of 6 (Multi-Platform Expansion)
-Plan: 4 of 4 complete (04-04)
-Status: Phase complete
-Last activity: 2026-02-02 - Completed 04-04-PLAN.md (Platform registration)
+Plan: 5 of 5 complete (04-05)
+Status: Phase complete (with gap closure)
+Last activity: 2026-02-03 - Completed 04-05-PLAN.md (Link composition for social posts)
 
-Progress: [██████████████████░░] ~90% (Phase 1-4 complete, Phase 5-6 remaining)
+Progress: [██████████████████░░] ~92% (Phase 1-4 complete with gap closure, Phase 5-6 remaining)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 22
-- Average duration: 2.4 minutes
-- Total execution time: 0.92 hours
+- Total plans completed: 23
+- Average duration: 2.5 minutes
+- Total execution time: 1.01 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [██████████████████░░] ~90% (P
 | 1 - Foundation & Approval Loop | 7/7 | 18 min | 2.6 min |
 | 2 - Content Generation | 5/5 | 12 min | 2.4 min |
 | 3 - First Platform Integration | 5/5 | 15 min | 3.0 min |
-| 4 - Multi-Platform Expansion | 4/4 | 16 min | 4.0 min |
+| 4 - Multi-Platform Expansion | 5/5 | 21 min | 4.2 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (2 min), 04-02 (7 min), 04-03 (3 min), 04-04 (3 min)
-- Trend: Integration plans fast (3 min), TDD plans slower (7 min) but thorough
+- Last 5 plans: 04-02 (7 min), 04-03 (3 min), 04-04 (3 min), 04-05 (5 min)
+- Trend: Integration plans fast (3 min), TDD plans slower (5-7 min) but thorough
 
 *Updated after each plan completion*
 
@@ -186,6 +186,13 @@ Recent decisions affecting current work:
 - Optional BLUESKY_DEFAULT_LANG (defaults to 'en')
 - Optional MASTODON_VISIBILITY (defaults to 'public')
 
+**From 04-05:**
+- SOCIAL_LINK_TARGET env var controls link target (ghost/github/custom URL, defaults to 'ghost')
+- Ghost-first sequential posting pattern (Ghost posts first, then social platforms)
+- Link composition: composeSocialPostContent() appends link to teaser
+- Social platforms receive modified state with teaser + link
+- Graceful fallback to GitHub URL when Ghost fails (if provided)
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -245,12 +252,14 @@ Recent decisions affecting current work:
 - 04-02: BlueskyPlugin complete (TDD, 19 tests passing, app password auth, RichText facets)
 - 04-03: MastodonPlugin complete (TDD, 20 tests passing, REST API client)
 - 04-04: Platform registration complete (Bluesky and Mastodon wired into setup)
+- 04-05: Link composition complete (social posts include Ghost URL or fallback)
 - Multi-platform posting ready: Ghost + Bluesky + Mastodon
-- 148 tests passing (no regressions)
+- 162 tests passing (no regressions)
+- Gap closure: Social posts now include links back to full content
 
 ## Session Continuity
 
-Last session: 2026-02-02 22:53 UTC
-Stopped at: Completed 04-04-PLAN.md (Platform registration - Phase 4 complete)
+Last session: 2026-02-03 00:25 UTC
+Stopped at: Completed 04-05-PLAN.md (Link composition - Phase 4 complete with gap closure)
 Resume file: None
-Next action: Phase 4 complete. Ready for Phase 5 or Phase 6.
+Next action: Phase 4 complete including gap closure. Ready for Phase 5 or Phase 6.
