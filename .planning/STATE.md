@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 5 of 6 (Intelligence and Releases)
-Plan: 4 of 7 complete (05-04)
+Plan: 5 of 7 complete (05-05)
 Status: In progress
-Last activity: 2026-02-03 - Completed 05-04-PLAN.md (Cadence integration)
+Last activity: 2026-02-03 - Completed 05-05-PLAN.md (Release event handling)
 
-Progress: [███████████████████░] ~96% (Phase 1-4 complete, Phase 5: 4/7 plans)
+Progress: [████████████████████░] ~97% (Phase 1-4 complete, Phase 5: 5/7 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 26
+- Total plans completed: 27
 - Average duration: 2.5 minutes
-- Total execution time: 1.17 hours
+- Total execution time: 1.23 hours
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [███████████████████░] ~96% (P
 | 2 - Content Generation | 5/5 | 12 min | 2.4 min |
 | 3 - First Platform Integration | 5/5 | 15 min | 3.0 min |
 | 4 - Multi-Platform Expansion | 5/5 | 21 min | 4.2 min |
-| 5 - Intelligence & Releases | 4/7 | 16 min | 4.0 min |
+| 5 - Intelligence & Releases | 5/7 | 20 min | 4.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-01 (3 min), 05-02 (3 min), 05-03 (6 min), 05-04 (4 min)
+- Last 5 plans: 05-02 (3 min), 05-03 (6 min), 05-04 (4 min), 05-05 (4 min)
 - Trend: Type/config plans fast (3 min), TDD plans slower (5-7 min) but thorough
 
 *Updated after each plan completion*
@@ -219,6 +219,12 @@ Recent decisions affecting current work:
 - Activity tracking updated on every exit path
 - GITHUB_TOKEN added to workflow (was missing)
 
+**From 05-05:**
+- Extended ApprovalEmailData.periodType to include 'release' (required for email template)
+- Post ID format: release-{sha256(repo+tag)} for uniqueness
+- Repository variables for pre-release/draft filtering (INCLUDE_PRERELEASES, INCLUDE_DRAFTS)
+- Release announcement stores both release data and digest/teaser for platform posting
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -288,11 +294,12 @@ Recent decisions affecting current work:
 - 05-02: Cadence decision logic complete (decideCadence, updateActivityTracking)
 - 05-03: Release content generation complete (TDD, 10 tests, AI-powered announcements)
 - 05-04: Cadence integration complete (generate-digest now cadence-aware)
+- 05-05: Release event handling complete (workflow + action for release announcements)
 - 195 tests passing
 
 ## Session Continuity
 
 Last session: 2026-02-03 01:53 UTC
-Stopped at: Completed 05-04-PLAN.md (Cadence integration)
+Stopped at: Completed 05-05-PLAN.md (Release event handling)
 Resume file: None
-Next action: Continue Phase 5 with 05-05-PLAN.md or 05-06-PLAN.md
+Next action: Continue Phase 5 with 05-06-PLAN.md or 05-07-PLAN.md
