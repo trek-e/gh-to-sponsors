@@ -18,6 +18,7 @@ import {
   prepareCommitContexts
 } from '../github/index.js';
 import { generateContent } from '../content/index.js';
+import { decideCadence, updateActivityTracking } from '../cadence/index.js';
 
 async function main() {
   try {
@@ -56,6 +57,30 @@ async function main() {
 
     const now = new Date();
 
+    // Load cadence config with defaults
+    const cadenceConfig = config.cadence || {
+      mode: 'auto' as const,
+      weeklyDay: 1,
+      quietPeriodDays: 3,
+      activityThreshold: 1,
+    };
+
+    // Preliminary cadence check - will be refined after we check actual activity
+    const preliminaryDecision = decideCadence(state, cadenceConfig, true);
+    console.log(`Cadence mode: ${cadenceConfig.mode}, preliminary: ${preliminaryDecision.action}`);
+
+    // For weekly mode on wrong day, skip early (no need to fetch)
+    if (cadenceConfig.mode === 'weekly') {
+      const today = new Date().getDay();
+      if (today !== cadenceConfig.weeklyDay) {
+        console.log(`Weekly mode: Today is ${today}, waiting for day ${cadenceConfig.weeklyDay}`);
+        // Still update activity tracking
+        const earlyExitState = updateActivityTracking(state, false);
+        await saveState({ ...earlyExitState, lastRun: now.toISOString() });
+        return;
+      }
+    }
+
     // Initialize Octokit
     const octokit = new Octokit({ auth: githubToken });
 
@@ -71,12 +96,27 @@ async function main() {
     const thresholds = config.content || { dailyThreshold: 1, weeklyThreshold: 3 };
     const activity = filterByActivity(repoGroups, thresholds);
 
-    // Check if there's meaningful activity
+    // Make final cadence decision based on actual activity
+    const decision = decideCadence(state, cadenceConfig, activity.hasActivity);
+    console.log(`Cadence decision: ${decision.action} (${decision.reason})`);
+
+    if (decision.action === 'skip') {
+      console.log('Skipping digest generation per cadence decision');
+      const skipState = updateActivityTracking(state, false);
+      await saveState({ ...skipState, lastRun: now.toISOString() });
+      return;
+    }
+
+    if (decision.immediate) {
+      console.log('Activity resumption detected! Generating immediate digest.');
+    }
+
+    // Check if there's meaningful activity (after cadence allows)
     if (!activity.hasActivity) {
       console.log('No meaningful activity found. Skipping digest generation.');
-      // Update lastRun but don't create a post
-      const newState = { ...state, lastRun: now.toISOString() };
-      await saveState(newState);
+      // Update lastRun and activity tracking but don't create a post
+      const noActivityState = updateActivityTracking(state, false);
+      await saveState({ ...noActivityState, lastRun: now.toISOString() });
       return;
     }
 
@@ -150,6 +190,9 @@ async function main() {
       digest: result.digest,
       teaser: result.teaser,
     });
+
+    // Update activity tracking (digest generated = activity)
+    newState = updateActivityTracking(newState, true);
 
     // Update lastRun timestamp
     newState = {
