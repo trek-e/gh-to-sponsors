@@ -141,7 +141,7 @@ describe('generateReleaseContent', () => {
       messages: { create: mockCreate },
     }) as unknown as Anthropic);
 
-    const result = await generateReleaseContent(standardPayload, 'owner/repo', 'test-api-key');
+    await generateReleaseContent(standardPayload, 'owner/repo', 'test-api-key');
 
     // Should call AI twice: once for post content, once for teaser
     expect(mockCreate).toHaveBeenCalledTimes(2);
@@ -205,7 +205,7 @@ describe('generateReleaseContent', () => {
         usage: { input_tokens: 100, output_tokens: 50 },
       })
       .mockResolvedValueOnce({
-        content: [{ type: 'text', text: '{"text": "New release!", "hashtags": ["#release", "#oss"]}' }],
+        content: [{ type: 'text', text: '{"text": "New release v1.2.0 is out now!", "hashtags": ["#release", "#oss"]}' }],
         usage: { input_tokens: 50, output_tokens: 30 },
       });
 
@@ -236,7 +236,7 @@ describe('generateReleaseContent', () => {
         usage: { input_tokens: 150, output_tokens: 75 },
       })
       .mockResolvedValueOnce({
-        content: [{ type: 'text', text: '{"text": "Teaser", "hashtags": ["#tag1", "#tag2"]}' }],
+        content: [{ type: 'text', text: '{"text": "v1.2.0 released with awesome features!", "hashtags": ["#tag1", "#tag2"]}' }],
         usage: { input_tokens: 60, output_tokens: 25 },
       });
 
