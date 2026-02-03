@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 5 of 6 (Intelligence and Releases)
-Plan: 1 of 7 complete (05-01)
+Plan: 3 of 7 complete (05-03)
 Status: In progress
-Last activity: 2026-02-02 - Completed 05-01-PLAN.md (Cadence and release config types)
+Last activity: 2026-02-03 - Completed 05-03-PLAN.md (Release content generation)
 
-Progress: [██████████████████░░] ~93% (Phase 1-4 complete, Phase 5 in progress)
+Progress: [███████████████████░] ~95% (Phase 1-4 complete, Phase 5: 3/7 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 23
+- Total plans completed: 25
 - Average duration: 2.5 minutes
-- Total execution time: 1.01 hours
+- Total execution time: 1.10 hours
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [██████████████████░░] ~93% (P
 | 2 - Content Generation | 5/5 | 12 min | 2.4 min |
 | 3 - First Platform Integration | 5/5 | 15 min | 3.0 min |
 | 4 - Multi-Platform Expansion | 5/5 | 21 min | 4.2 min |
-| 5 - Intelligence & Releases | 1/7 | 3 min | 3.0 min |
+| 5 - Intelligence & Releases | 3/7 | 12 min | 4.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-03 (3 min), 04-04 (3 min), 04-05 (5 min), 05-01 (3 min)
+- Last 5 plans: 04-05 (5 min), 05-01 (3 min), 05-02 (3 min), 05-03 (6 min)
 - Trend: Type/config plans fast (3 min), TDD plans slower (5-7 min) but thorough
 
 *Updated after each plan completion*
@@ -201,6 +201,18 @@ Recent decisions affecting current work:
 - Quiet period threshold 3 days before switching to weekly
 - Pre-releases and drafts excluded from announcements by default
 
+**From 05-02:**
+- decideCadence returns action + periodType + reason + immediate flag
+- updateActivityTracking maintains immutable state updates
+- Auto mode switches to weekly after quietPeriodDays (default 3)
+- Activity resumption after quiet period triggers immediate=true
+
+**From 05-03:**
+- buildReleaseAnnouncement is pure (no AI) for testability
+- Separate prompts for post content vs teaser (different temps)
+- Post temp 0.5, teaser temp 0.7 for excitement vs creativity
+- Release announcements use 'special' tone per CONTEXT.md
+
 ### Pending Todos
 
 **User Setup Required for Phase 1 Completion:**
@@ -267,11 +279,13 @@ Recent decisions affecting current work:
 
 **Phase 5 In Progress (Intelligence & Releases):**
 - 05-01: Cadence and release config types complete (state and config extended)
-- Foundation types ready for cadence decision logic and release handling
+- 05-02: Cadence decision logic complete (decideCadence, updateActivityTracking)
+- 05-03: Release content generation complete (TDD, 10 tests, AI-powered announcements)
+- Foundation types + cadence logic + release content ready for integration
 
 ## Session Continuity
 
-Last session: 2026-02-02 20:37 UTC
-Stopped at: Completed 05-01-PLAN.md (Cadence and release config types)
+Last session: 2026-02-03 01:45 UTC
+Stopped at: Completed 05-03-PLAN.md (Release content generation)
 Resume file: None
-Next action: Continue Phase 5 with 05-02-PLAN.md (Cadence decision logic)
+Next action: Continue Phase 5 with 05-04-PLAN.md (Release event handling)
