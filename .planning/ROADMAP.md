@@ -106,11 +106,16 @@ Plans:
   2. System falls back to weekly digest when no daily activity
   3. User can configure cadence (daily, weekly, or after N updates)
   4. System only sends emails when meaningful activity exists
-**Plans**: TBD
+**Plans**: 7 plans in 4 waves
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md — State and config schema extensions (Wave 1)
+- [ ] 05-02-PLAN.md — Cadence decision logic (Wave 2, TDD)
+- [ ] 05-03-PLAN.md — Release content generation (Wave 2, TDD)
+- [ ] 05-04-PLAN.md — Integrate cadence into generate-digest (Wave 3)
+- [ ] 05-05-PLAN.md — Release workflow and handle-release action (Wave 3)
+- [ ] 05-06-PLAN.md — Email templates for release announcements (Wave 4)
+- [ ] 05-07-PLAN.md — Integration verification (Wave 4, checkpoint)
 
 ### Phase 6: Extensibility
 **Goal**: Community can create and contribute platform plugins
@@ -137,5 +142,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Content Generation | 5/5 | Complete | 2026-02-02 |
 | 3. First Platform Integration | 5/5 | Complete | 2026-02-02 |
 | 4. Multi-Platform Expansion | 5/5 | Complete | 2026-02-02 |
-| 5. Intelligence & Releases | 0/TBD | Not started | - |
+| 5. Intelligence & Releases | 0/7 | Planned | - |
 | 6. Extensibility | 0/TBD | Not started | - |
