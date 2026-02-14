@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Community-contributed platform plugins for gh-to-sponsors",
+  "_schema": {
+    "description": "Schema definition for plugin entries",
+    "entry": {
+      "name": "string - npm package name (e.g., @username/gh-to-sponsors-plugin-platform)",
+      "description": "string - Brief description of the platform",
+      "author": "string - GitHub username of the author",
+      "repository": "string - GitHub repository URL",
+      "npmPackage": "string - npm package URL"
+    }
+  },
+  "plugins": []
+}
