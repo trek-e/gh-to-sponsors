@@ -1,0 +1,21 @@
+{
+  "name": "@example/gh-to-sponsors-plugin-example",
+  "version": "0.1.0",
+  "description": "Example platform plugin for gh-to-sponsors",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": ["gh-to-sponsors", "plugin", "example"],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "gh-to-sponsors": ">=0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}
