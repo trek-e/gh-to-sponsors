@@ -11,7 +11,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **GHUB-01**: User can configure one or more repos to monitor
 - [x] **GHUB-02**: System monitors commits and aggregates activity
-- [ ] **GHUB-03**: System detects GitHub Releases and triggers announcements
+- [x] **GHUB-03**: System detects GitHub Releases and triggers announcements
 
 ### Content Generation
 
@@ -21,16 +21,16 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Scheduling
 
-- [ ] **SCHD-01**: System runs daily and generates digest if activity exists
-- [ ] **SCHD-02**: System falls back to weekly digest if no daily activity
-- [ ] **SCHD-03**: User can configure cadence (daily, weekly, or after N updates)
+- [x] **SCHD-01**: System runs daily and generates digest if activity exists
+- [x] **SCHD-02**: System falls back to weekly digest if no daily activity
+- [x] **SCHD-03**: User can configure cadence (daily, weekly, or after N updates)
 
 ### Approval Workflow
 
-- [ ] **APPR-01**: System emails draft preview to creator
-- [ ] **APPR-02**: Email includes approve/skip links
-- [ ] **APPR-03**: Serverless endpoint handles approval clicks
-- [ ] **APPR-04**: System triggers platform posting on approval
+- [x] **APPR-01**: System emails draft preview to creator
+- [x] **APPR-02**: Email includes approve/skip links
+- [x] **APPR-03**: Serverless endpoint handles approval clicks
+- [x] **APPR-04**: System triggers platform posting on approval
 
 ### Supporter Platforms
 
@@ -44,13 +44,13 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Extensibility
 
 - [x] **EXTN-01**: Plugin architecture allows adding new platforms
-- [ ] **EXTN-02**: Documentation exists for creating platform plugins
+- [x] **EXTN-02**: Documentation exists for creating platform plugins
 
 ### Infrastructure
 
-- [ ] **INFR-01**: Runs as GitHub Action (scheduled + event-triggered)
-- [ ] **INFR-02**: Serverless approval endpoint (Vercel or similar)
-- [ ] **INFR-03**: Email service integration (Resend or similar)
+- [x] **INFR-01**: Runs as GitHub Action (scheduled + event-triggered)
+- [x] **INFR-02**: Serverless approval endpoint (Vercel or similar)
+- [x] **INFR-03**: Email service integration (Resend or similar)
 
 ## v2 Requirements
 
@@ -93,14 +93,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFR-01 | Phase 1 | Pending |
-| INFR-02 | Phase 1 | Pending |
-| INFR-03 | Phase 1 | Pending |
-| APPR-01 | Phase 1 | Pending |
-| APPR-02 | Phase 1 | Pending |
-| APPR-03 | Phase 1 | Pending |
-| APPR-04 | Phase 1 | Pending |
-| SCHD-01 | Phase 1 | Pending |
+| INFR-01 | Phase 1 | Complete |
+| INFR-02 | Phase 1 | Complete |
+| INFR-03 | Phase 1 | Complete |
+| APPR-01 | Phase 1 | Complete |
+| APPR-02 | Phase 1 | Complete |
+| APPR-03 | Phase 1 | Complete |
+| APPR-04 | Phase 1 | Complete |
+| SCHD-01 | Phase 1 | Complete |
 | GHUB-01 | Phase 2 | Complete |
 | GHUB-02 | Phase 2 | Complete |
 | CONT-01 | Phase 2 | Complete |
@@ -110,10 +110,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXTN-01 | Phase 3 | Complete |
 | SOCL-01 | Phase 4 | Complete |
 | SOCL-02 | Phase 4 | Complete |
-| GHUB-03 | Phase 5 | Pending |
-| SCHD-02 | Phase 5 | Pending |
-| SCHD-03 | Phase 5 | Pending |
-| EXTN-02 | Phase 6 | Pending |
+| GHUB-03 | Phase 5 | Complete |
+| SCHD-02 | Phase 5 | Complete |
+| SCHD-03 | Phase 5 | Complete |
+| EXTN-02 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 21 total
@@ -122,4 +122,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2025-02-01*
-*Last updated: 2026-02-02 — Phase 4 complete (Bluesky + Mastodon with link composition)*
+*Last updated: 2026-02-14 — All phases complete (v1.0 milestone audit)*

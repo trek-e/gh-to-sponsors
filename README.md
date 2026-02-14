@@ -24,10 +24,11 @@ No manual copying. No platform-hopping. No friction.
 - Bluesky (short teasers with link to full post)
 - Mastodon (short teasers with link to full post)
 
-**Explicitly Not Supported:**
+**Not Supported (and why):**
+- Patreon — no posting API exists (their API is read-only; you cannot create posts programmatically)
+- Ko-fi — no posting API exists (webhook-only for payment notifications)
 - X/Twitter — platform enables fascism
 - Meta (Facebook, Instagram, Threads) — same reasoning
-- Ko-fi — no posting API exists
 
 ## Features
 
