@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Content Generation** - GitHub activity monitoring and digest creation
 - [x] **Phase 3: First Platform Integration** - Ghost posting and plugin architecture validation
 - [x] **Phase 4: Multi-Platform Expansion** - Bluesky and Mastodon integrations
-- [ ] **Phase 5: Intelligence & Releases** - GitHub Releases detection and adaptive scheduling
+- [x] **Phase 5: Intelligence & Releases** - GitHub Releases detection and adaptive scheduling
 - [ ] **Phase 6: Extensibility** - Plugin system documentation and community enablement
 
 ## Phase Details
@@ -112,10 +112,10 @@ Plans:
 - [x] 05-01-PLAN.md — State and config schema extensions (Wave 1)
 - [x] 05-02-PLAN.md — Cadence decision logic (Wave 2, TDD)
 - [x] 05-03-PLAN.md — Release content generation (Wave 2, TDD)
-- [ ] 05-04-PLAN.md — Integrate cadence into generate-digest (Wave 3)
-- [ ] 05-05-PLAN.md — Release workflow and handle-release action (Wave 3)
-- [ ] 05-06-PLAN.md — Email templates for release announcements (Wave 4)
-- [ ] 05-07-PLAN.md — Integration verification (Wave 4, checkpoint)
+- [x] 05-04-PLAN.md — Integrate cadence into generate-digest (Wave 3)
+- [x] 05-05-PLAN.md — Release workflow and handle-release action (Wave 3)
+- [x] 05-06-PLAN.md — Email templates for release announcements (Wave 4)
+- [x] 05-07-PLAN.md — Integration verification (Wave 4, checkpoint)
 
 ### Phase 6: Extensibility
 **Goal**: Community can create and contribute platform plugins
@@ -142,5 +142,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Content Generation | 5/5 | Complete | 2026-02-02 |
 | 3. First Platform Integration | 5/5 | Complete | 2026-02-02 |
 | 4. Multi-Platform Expansion | 5/5 | Complete | 2026-02-02 |
-| 5. Intelligence & Releases | 3/7 | In progress | - |
+| 5. Intelligence & Releases | 7/7 | Complete | 2026-02-14 |
 | 6. Extensibility | 0/TBD | Not started | - |
