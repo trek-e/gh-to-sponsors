@@ -25,7 +25,7 @@ No manual copying. No platform-hopping. No friction.
 - Mastodon (short teasers with link to full post)
 
 **Not Supported (and why):**
-- Patreon — no posting API exists (their API is read-only; you cannot create posts programmatically)
+- Patreon — no posting API exists (their API is read-only; you cannot create posts programmatically. Write access has been requested by developers since 2018 with no commitment from Patreon)
 - Ko-fi — no posting API exists (webhook-only for payment notifications)
 - X/Twitter — platform enables fascism
 - Meta (Facebook, Instagram, Threads) — same reasoning
